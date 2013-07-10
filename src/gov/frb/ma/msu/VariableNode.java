@@ -42,7 +42,7 @@ public class VariableNode extends Node
 	       m.FindVariableIndex(Name))
 	* m.NEq + eqno;
       indexPlus1 = index + 1;
-      pout.print("  g(" + indexPlus1 + ") = g(" + indexPlus1 + ")");
+      pout.print("  g[" + indexPlus1 + "] = g[" + indexPlus1 + "]");
       if (side == AMA.Left_Side)
 	pout.print(" + 1;\n");
       else
@@ -58,7 +58,7 @@ public class VariableNode extends Node
       index = ((Period + m.NLag) * m.NEq + m.FindVariableIndex(Name))
 	* m.NEq + eqno;
       indexPlus1 = index + 1;
-      pout.print("  h(" + indexPlus1 + ") = h(" + indexPlus1 + ")");
+      pout.print("  h[" + indexPlus1 + "] = h[" + indexPlus1 + "]");
       if (side == AMA.Left_Side)
 	pout.print(" + 1;\n");
       else

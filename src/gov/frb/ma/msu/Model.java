@@ -145,35 +145,35 @@ public class Model
     try {
 	dataPS = new PrintStream(new FileOutputStream(dataFileName));
 
-	dataPS.println("function [param_,np,modname,neq,nlag,nlead,eqname_,eqtype_,endog_,delay_,vtype_] = ...");
-	dataPS.println("     " + lcName + "_AMA_data()");
+	dataPS.println("void " + lcName + "_AMA_data(int param_,np,char *modname,int eqtype_,int endog_,int delay_,int vtype_) {");
 	dataPS.println();
 	dataPS.println("% " + lcName + "_AMA_data()");
-	dataPS.println("%     This function will return various information about the AMA model,");
-	dataPS.println("%     but will not compute the G and H matrices.");
+	dataPS.println("//     This function will return various information about the AMA model,");
+	dataPS.println("//     but will not compute the G and H matrices.");
 	dataPS.println();
-	dataPS.println("  eqname = cell(" + NEq + ", 1);");
-	dataPS.println("  param = cell(" + NCoeffs + ", 1);");
-	dataPS.println("  endog = cell(" + NEq + ", 1);");
-	dataPS.println("  delay = zeros(" + NEq + ", 1);");
-	dataPS.println("  vtype = zeros(" + NEq + ", 1);");
-	dataPS.println("  eqtype = zeros(" + NEq + ", 1);");
+	dataPS.println("const char *eqname[" + NEq + "];");
+	dataPS.println("const char *param[" + NCoeffs + "];");
+	dataPS.println("const char *endog[" + NEq + "];");
+	dataPS.println("int delay[" + NEq + "][1];");
+	dataPS.println("int vtype[" + NEq + "][1];");
+	dataPS.println("int eqtype[" + NEq + "][1];");
 	dataPS.println();
-	dataPS.println("  modname = '" + Name + "';");
-	dataPS.println("  neq = " + NEq + ";");
-	dataPS.println("  np = " + NCoeffs + ";");
-	dataPS.println("  nlag = " + NLag + ";");
-	dataPS.println("  nlead = " + NLead + ";");
+	dataPS.println("char modname[] = /"" + Name + "/";");
+	dataPS.println("int neq = " + NEq + ";");
+	dataPS.println("int np = " + NCoeffs + ";");
+	dataPS.println("int nlag = " + NLag + ";");
+	dataPS.println("int nlead = " + NLead + ";");
+	dataPS.println("int eqtype[" + NEq + "][1];");
 	dataPS.println();
 
 	for (i = 0; i < NEq; i++)
-	    dataPS.println("  eqname(" + (i+1) + ") = cellstr('" +
-			   Equations[i].Name + "');");
+	    dataPS.println("  eqname[" + (i+1) + "] = /"" +
+			   Equations[i].Name + "/";");
 	dataPS.println("  eqname_ = char(eqname);");
 	dataPS.println();
 
 	for (i = 0; i < NEq; i++) {
-	    dataPS.print("  eqtype(" + (i+1) + ") = " + Equations[i].EqType +
+	    dataPS.print("  eqtype[" + (i+1) + "][1] = " + Equations[i].EqType +
 			   ";   ");
 	    if (i % 3 == 2)
 	      dataPS.println();
@@ -184,19 +184,19 @@ public class Model
 	dataPS.println();
 
 	for (i = 0; i < NCoeffs; i++)
-	dataPS.println("  param(" + (i+1) + ") = cellstr('" + Coefficients[i]
-		       + "');");
+	dataPS.println("  param[" + (i+1) + "] = /"" + Coefficients[i]
+		       + "/";");
 	dataPS.println("  param_ = char(param);");
 	dataPS.println();
 
 	for (i = 0; i < NVars; i++)
-	  dataPS.println("  endog(" + (i+1) + ") = cellstr('" +
-			 Variables[i].Name + "');");
+	  dataPS.println("  endog[" + (i+1) + "] = /"" +
+			 Variables[i].Name + "/";");
 	dataPS.println("  endog_ = char(endog);");
 	dataPS.println();
 
 	for (i = 0; i < NVars; i++) {
-	  dataPS.print("  delay(" + (i+1) + ") = " + Variables[i].returnDelay() +
+	  dataPS.print("  delay[" + (i+1) + "][1] = " + Variables[i].returnDelay() +
 		       ";   ");
 	  if (i % 3 == 2)
 	    dataPS.println();
@@ -207,7 +207,7 @@ public class Model
 	dataPS.print("\n");
 	
 	for (i = 0; i < NEq; i++) {
-	  dataPS.print("  vtype(" + (i+1) + ") = " + Variables[i].DataType +
+	  dataPS.print("  vtype[" + (i+1) + "][1] = " + Variables[i].DataType +
 		       ";   ");
 	  if (i % 3 == 2)
 	    dataPS.println();
@@ -216,11 +216,15 @@ public class Model
 	  dataPS.println();
 	dataPS.println("  vtype_ = vtype;");
 	dataPS.print("\n\n\n");
-
+    
+	dataPS.println("}");
+	
 	dataPS.close();
     } catch (Exception e) {
 	System.err.println("ERROR: " + e.getMessage());
     }
+
+    
 
 /*****************************************************************
   Now print out the function compute_AMA_matrices(). This function
@@ -233,14 +237,18 @@ public class Model
     try {
       matrixPS = new PrintStream(new FileOutputStream(matrixFileName));
             
-      matrixPS.println("% " + lcName + "_AMA_matrices()");
-      matrixPS.println("%     This script will compute the G and H matrices.");
+      matrixPS.println("void " + lcName + "_AMA_matrices(char paramnames,double paramvalues) {");
+      matrixPS.println("//     This script will compute the G and H matrices.");
       matrixPS.println();
 
-      matrixPS.println("  g = zeros(" + NEq + ", " + ((NLag+1)*NEq)
-		       + ");");
-      matrixPS.println("  h = zeros(" + NEq + ", " + ((NLag+1+NLead)*NEq)
-		       + ");");
+      for (i = 0; i < NCoeffs; i++)
+        dataPS.println("double " + Coefficients[i] + ";");
+      dataPS.println(Coefficients[i] + "= + paramvalues[i]");
+	dataPS.println("  param_ = char(param);");
+	dataPS.println();
+
+      matrixPS.println("int g[" + NEq + "]["+ (NLag+1)*NEq +"] = { { 0 } };");
+      matrixPS.println("int  h[" + NEq + "]["+ (NLag+1+NLead)*NEq +"] = { { 0 } } ;");
       matrixPS.println();
 
       for (i = 0; i < NEq; i++) {
@@ -257,7 +265,9 @@ public class Model
       matrixPS.println();
       matrixPS.println("  cofg = g;");
       matrixPS.println("  cofh = h;");
-
+      
+      dataPS.println("}");
+      
       matrixPS.close();
     } catch (Exception e) {
       System.err.println("ERROR: " + e.getMessage());
