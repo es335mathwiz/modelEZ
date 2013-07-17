@@ -158,7 +158,7 @@ public class Model
 	dataPS.println("int vtype[" + NEq + "][1];");
 	dataPS.println("int eqtype[" + NEq + "][1];");
 	dataPS.println();
-	dataPS.println("char modname[] = /"" + Name + "/";");
+	dataPS.println("char modname[] = '" + Name + "';");
 	dataPS.println("int neq = " + NEq + ";");
 	dataPS.println("int np = " + NCoeffs + ";");
 	dataPS.println("int nlag = " + NLag + ";");
@@ -167,8 +167,8 @@ public class Model
 	dataPS.println();
 
 	for (i = 0; i < NEq; i++)
-	    dataPS.println("  eqname[" + (i+1) + "] = /"" +
-			   Equations[i].Name + "/";");
+	    dataPS.println("  eqname[" + (i+1) + "] = '" +
+			   Equations[i].Name + "';");
 	dataPS.println("  eqname_ = char(eqname);");
 	dataPS.println();
 
@@ -184,14 +184,14 @@ public class Model
 	dataPS.println();
 
 	for (i = 0; i < NCoeffs; i++)
-	dataPS.println("  param[" + (i+1) + "] = /"" + Coefficients[i]
-		       + "/";");
+	dataPS.println("  param[" + (i+1) + "] = '" + Coefficients[i]
+		       + "';");
 	dataPS.println("  param_ = char(param);");
 	dataPS.println();
 
 	for (i = 0; i < NVars; i++)
-	  dataPS.println("  endog[" + (i+1) + "] = /"" +
-			 Variables[i].Name + "/";");
+	  dataPS.println("  endog[" + (i+1) + "] = '" +
+			 Variables[i].Name + "';");
 	dataPS.println("  endog_ = char(endog);");
 	dataPS.println();
 
