@@ -115,7 +115,7 @@ public class ProductNode extends Node
 	       m.FindVariableIndex(vTerm.Name))
 	* m.NEq + eqno;
       indexPlus1 = index + 1;
-      pout.print("  g(" + indexPlus1 + ") = g(" + indexPlus1 + ")");
+      pout.print("  g[" + indexPlus1 + "] = g[" + indexPlus1 + "]");
       if (side == AMA.Right_Side)
 	pout.print(" - ");
       else
@@ -145,7 +145,7 @@ public class ProductNode extends Node
 	       m.FindVariableIndex(vTerm.Name))
 	* m.NEq + eqno;
       indexPlus1 = index + 1;
-      pout.print("  h(" + indexPlus1 + ") = h(" + indexPlus1 + ")");
+      pout.print("  h[" + indexPlus1 + "] = h[" + indexPlus1 + "]");
       if (side == AMA.Right_Side)
 	pout.print(" - ");
       else
