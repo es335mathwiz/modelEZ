@@ -242,10 +242,10 @@ public class Model
       matrixPS.println();
 
       for (i = 0; i < NCoeffs; i++)
-        dataPS.println("double " + Coefficients[i] + ";");
-      dataPS.println(Coefficients[i] + "= + paramvalues[i]");
-	dataPS.println("  param_ = char(param);");
-	dataPS.println();
+        matrixPS.println("double " + Coefficients[i] + ";");
+        matrixPS.println(Coefficients[i] + "= + paramvalues[i]");
+	matrixPS.println("  param_ = char(param);");
+	matrixPS.println();
 
       matrixPS.println("int g[" + NEq + "]["+ (NLag+1)*NEq +"] = { { 0 } };");
       matrixPS.println("int  h[" + NEq + "]["+ (NLag+1+NLead)*NEq +"] = { { 0 } } ;");
@@ -266,7 +266,7 @@ public class Model
       matrixPS.println("  cofg = g;");
       matrixPS.println("  cofh = h;");
       
-      dataPS.println("}");
+      matrixPS.println("}");
       
       matrixPS.close();
     } catch (Exception e) {

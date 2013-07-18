@@ -1,5 +1,28 @@
-% antulio.mod_AMA_matrices()
-%     This script will compute the G and H matrices.
+void antulio.mod_AMA_matrices(char paramnames,double paramvalues) {
+//     This script will compute the G and H matrices.
+
+double YAK;
+double YAE;
+double YAB;
+double YAL;
+double MAK;
+double QA11;
+double QA12;
+double MAL;
+double YBK;
+double YBE;
+double YBA;
+double MBK;
+double MBE;
+double MBA;
+double MUA2;
+double P11;
+double P21;
+double P12;
+double P22;
+double RHO;
+null= + paramvalues[i]
+  param_ = char(param);
 
 int g[8][16] = { { 0 } };
 int  h[8][24] = { { 0 } } ;
@@ -38,3 +61,4 @@ int  h[8][24] = { { 0 } } ;
 
   cofg = g;
   cofh = h;
+}

@@ -1,15 +1,15 @@
-void antulio.mod_AMA_data(int param_,np,char modname,int neq,int nlag,int nlead,char eqname_,int eqtype_,int endog_,int delay_,int vtype_) {
+void antulio.mod_AMA_data(int param_,np,char *modname,int eqtype_,int endog_,int delay_,int vtype_) {
 
 % antulio.mod_AMA_data()
-%     This function will return various information about the AMA model,
-%     but will not compute the G and H matrices.
+//     This function will return various information about the AMA model,
+//     but will not compute the G and H matrices.
 
-char eqname[8][256];
-char param[20][256];
-char endog[8][256];
+const char *eqname[8];
+const char *param[20];
+const char *endog[8];
 int delay[8][1];
 int vtype[8][1];
-char eqtype[8][256];
+int eqtype[8][1];
 
 char modname[] = 'antulio.mod';
 int neq = 8;
