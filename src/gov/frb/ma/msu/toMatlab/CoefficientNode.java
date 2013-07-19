@@ -1,35 +1,38 @@
-package gov.frb.ma.msu;
+package gov.frb.ma.msu.toMatlab;
+
+
 
 import java.io.*;
 
-public class ConstantNode extends Node
+public class CoefficientNode extends Node
 {
-  double Value;
+  String Name;
   
-  public ConstantNode(double v) {
-    Value = v;
+  public CoefficientNode(String s) {
+    Name = s;
   }
   
   public Node CopySubtree() { 
-    ConstantNode cn = new ConstantNode(Value);
+    CoefficientNode cn = new CoefficientNode(Name);
     return cn;
   }
 
   public Node ExpandSubtree() {
     return this;
   }
-
+  
   public int CountVariables() {
     return 0;
   }
 
   public Node FindVariable() {
-      return null;
+    return null;
   }
 
   public void PrintGMatrixEntries(Model m, int eqno, int side,
 				  PrintStream pout) {
-    int eqnoPlus1 = eqno + 1;
+    int eqnoPlus1;
+    eqnoPlus1 = eqno + 1;
     System.err.println("Error in equation " + eqnoPlus1 +
 		       ": Additive constants not permitted.\n");
     System.exit(1);
@@ -44,14 +47,11 @@ public class ConstantNode extends Node
  }
 
   public void PrintSubtree() {
-    if (Value < 0.0)
-      System.out.print("(" + Value + ")");
-      else
-	System.out.print(Value);
+    System.out.print(Name);
   }
 
   public void PrintTerm(PrintStream pout) {
-    pout.print(Value);
+    pout.print(Name);
   }
 
   public int PowerErrorCheck() {
@@ -61,6 +61,6 @@ public class ConstantNode extends Node
   public int ProductErrorCheck() {
     return 0;
   }
-    
-} // class ConstantNode
+  
+} // class CoefficientNode
 

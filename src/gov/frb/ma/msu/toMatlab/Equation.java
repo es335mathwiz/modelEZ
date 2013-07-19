@@ -1,4 +1,4 @@
-package gov.frb.ma.msu;
+package gov.frb.ma.msu.toMatlab;
 
 public class Equation {
 	  String Name;

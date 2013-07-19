@@ -1,4 +1,4 @@
-package gov.frb.ma.msu;
+package gov.frb.ma.msu.toMatlab;
 
 import java.io.*;
 

@@ -21,7 +21,7 @@ options {
 }
 
 PARSER_BEGIN(AMAtoMatlab)
-package gov.frb.ma.msu;
+package gov.frb.ma.msu.toMatlab;
 import java.io.*;
 
 public class AMAtoMatlab {
