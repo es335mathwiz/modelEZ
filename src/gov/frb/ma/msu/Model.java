@@ -10,9 +10,9 @@ public class Model
   int NLag;        // maximum lag in model
   int NLead;       // maximum lead in model
 
-  Equation[] Equations = new Equation[AMA.Max_Array_Size];   // array of Equations
-  String[] Coefficients = new String[AMA.Max_Array_Size];    // coefficient names
-  Variable[] Variables = new Variable[AMA.Max_Array_Size];  // Variable objects
+  Equation[] Equations = new Equation[AMAtoMatlab.Max_Array_Size];   // array of Equations
+  String[] Coefficients = new String[AMAtoMatlab.Max_Array_Size];    // coefficient names
+  Variable[] Variables = new Variable[AMAtoMatlab.Max_Array_Size];  // Variable objects
 
   int NVars;       // number of variables
   int NCoeffs;     // number of coefficients
@@ -244,13 +244,13 @@ public class Model
       matrixPS.println();
 
       for (i = 0; i < NEq; i++) {
-	Equations[i].LHS.PrintGMatrixEntries(this, i, AMA.Left_Side,
+	Equations[i].LHS.PrintGMatrixEntries(this, i, AMAtoMatlab.Left_Side,
 					     matrixPS);
-	Equations[i].RHS.PrintGMatrixEntries(this, i, AMA.Right_Side,
+	Equations[i].RHS.PrintGMatrixEntries(this, i, AMAtoMatlab.Right_Side,
 					     matrixPS);
-	Equations[i].LHS.PrintHMatrixEntries(this, i, AMA.Left_Side,
+	Equations[i].LHS.PrintHMatrixEntries(this, i, AMAtoMatlab.Left_Side,
 					     matrixPS);
-	Equations[i].RHS.PrintHMatrixEntries(this, i, AMA.Right_Side,
+	Equations[i].RHS.PrintHMatrixEntries(this, i, AMAtoMatlab.Right_Side,
 					     matrixPS);
       }
 
