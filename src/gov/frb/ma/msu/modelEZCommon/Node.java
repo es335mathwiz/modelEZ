@@ -1,8 +1,10 @@
-package gov.frb.ma.msu.toMatlab;
+package gov.frb.ma.msu.modelEZCommon;
+
+import gov.frb.ma.msu.toMatlab.Model;
 
 import java.io.*;
 
-abstract class Node
+public abstract class Node
 {
   // CopySubtree() returns a pointer to a copy of the subtree rooted at 
   // this Node.

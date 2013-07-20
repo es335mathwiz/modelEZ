@@ -1,5 +1,7 @@
 package gov.frb.ma.msu.toMatlab;
 
+import gov.frb.ma.msu.modelEZCommon.Node;
+
 import java.io.*;
 
 

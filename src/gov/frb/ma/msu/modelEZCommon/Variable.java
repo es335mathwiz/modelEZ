@@ -1,13 +1,13 @@
-package gov.frb.ma.msu.toMatlab;
+package gov.frb.ma.msu.modelEZCommon;
 
 public class Variable {
-    String Name;
+    private String Name;
     ////    int Type;     // must be Aim.Endogenous or Aim.Exogenous.
-    int DataType; // must be Aim.Data, Aim.Notd, or Aim.Dtrm
+    private int DataType; // must be Aim.Data, Aim.Notd, or Aim.Dtrm
     int Delay;
 
     public Variable(String s) {
-	Name = s;
+	setName(s);
     }
 
     ////    public void setType(int n) { Type = n; }
@@ -15,5 +15,17 @@ public class Variable {
     public void setDelay(int n) { Delay = n; }
 
     public int returnDelay() { return Delay; }
+
+	public int getDataType() {
+		return DataType;
+	}
+
+	public String getName() {
+		return Name;
+	}
+
+	public void setName(String name) {
+		Name = name;
+	}
 
 }

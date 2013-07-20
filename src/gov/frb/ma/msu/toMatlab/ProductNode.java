@@ -1,5 +1,8 @@
 package gov.frb.ma.msu.toMatlab;
 
+import gov.frb.ma.msu.modelEZCommon.Node;
+import gov.frb.ma.msu.modelEZCommon.SumNode;
+
 import java.io.*;
 
 public class ProductNode extends Node 
@@ -38,8 +41,8 @@ public class ProductNode extends Node
     if ((left instanceof SumNode) && 
     	!(right instanceof SumNode))
       {
-	pn1 = new ProductNode(((SumNode)left).Summand1, right);
-	pn2 = new ProductNode(((SumNode)left).Summand2, right.CopySubtree());
+	pn1 = new ProductNode(((SumNode)left).getSummand1(), right);
+	pn2 = new ProductNode(((SumNode)left).getSummand2(), right.CopySubtree());
 	n1 = pn1.ExpandSubtree();
 	n2 = pn2.ExpandSubtree();
 	sn1 = new SumNode(n1, n2);
@@ -48,9 +51,9 @@ public class ProductNode extends Node
     else if (!(left instanceof SumNode) &&
 	     (right instanceof SumNode))
       {
- 	pn1 = new ProductNode(left, ((SumNode)right).Summand1);
+ 	pn1 = new ProductNode(left, ((SumNode)right).getSummand1());
  	pn2 = new ProductNode(left.CopySubtree(), 
-			      ((SumNode)right).Summand2);
+			      ((SumNode)right).getSummand2());
 	n1 = pn1.ExpandSubtree();
 	n2 = pn2.ExpandSubtree();
 	sn1 = new SumNode(n1, n2);
@@ -59,14 +62,14 @@ public class ProductNode extends Node
     else if ((left instanceof SumNode) &&
 	     (right instanceof SumNode))
     {
-      pn1 = new ProductNode(((SumNode)left).Summand1,
-			    ((SumNode)right).Summand1);
-      pn2 = new ProductNode(((SumNode)left).Summand1.CopySubtree(),
-			    ((SumNode)right).Summand2);
-      pn3 = new ProductNode(((SumNode)left).Summand2,
-			    ((SumNode)right).Summand1.CopySubtree());
-      pn4 = new ProductNode(((SumNode)left).Summand2.CopySubtree(), 
-			    ((SumNode)right).Summand2.CopySubtree());
+      pn1 = new ProductNode(((SumNode)left).getSummand1(),
+			    ((SumNode)right).getSummand1());
+      pn2 = new ProductNode(((SumNode)left).getSummand1().CopySubtree(),
+			    ((SumNode)right).getSummand2());
+      pn3 = new ProductNode(((SumNode)left).getSummand2(),
+			    ((SumNode)right).getSummand1().CopySubtree());
+      pn4 = new ProductNode(((SumNode)left).getSummand2().CopySubtree(), 
+			    ((SumNode)right).getSummand2().CopySubtree());
       sn1 = new SumNode(pn1, pn2);
       sn2 = new SumNode(pn3, pn4);
       n1 = sn1.ExpandSubtree();
