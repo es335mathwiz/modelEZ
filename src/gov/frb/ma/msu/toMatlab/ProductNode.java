@@ -1,5 +1,6 @@
 package gov.frb.ma.msu.toMatlab;
 
+import gov.frb.ma.msu.modelEZCommon.ModelAbstrct;
 import gov.frb.ma.msu.modelEZCommon.Node;
 import gov.frb.ma.msu.modelEZCommon.SumNode;
 
@@ -98,7 +99,7 @@ public class ProductNode extends Node
       return Multiplicand2.FindVariable();
   }
 
-  public void PrintGMatrixEntries(Model m, int eqno, int side,
+  public void PrintGMatrixEntries(ModelAbstrct m, int eqno, int side,
 				  PrintStream pout) {
     int eqnoPlus1;
     int index;
@@ -114,9 +115,9 @@ public class ProductNode extends Node
     }
     vTerm = (VariableNode) term;
     if ((vTerm.Period <= 0) && (vTerm.ELag == AMAtoMatlab.No)) {
-      index = ((vTerm.Period + m.NLag) * m.NEq +
+      index = ((vTerm.Period + m.getNLag()) * m.getNEq() +
 	       m.FindVariableIndex(vTerm.Name))
-	* m.NEq + eqno;
+	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
       pout.print("  g(" + indexPlus1 + ") = g(" + indexPlus1 + ")");
       if (side == AMAtoMatlab.Right_Side)
@@ -128,7 +129,7 @@ public class ProductNode extends Node
     }
   }
 
-  public void PrintHMatrixEntries(Model m, int eqno, int side,
+  public void PrintHMatrixEntries(ModelAbstrct m, int eqno, int side,
 				  PrintStream pout) {
     int eqnoPlus1;
     int index;
@@ -144,9 +145,9 @@ public class ProductNode extends Node
     }
     vTerm = (VariableNode) term;
     if ((vTerm.Period > 0) || (vTerm.ELag == AMAtoMatlab.Yes)) {
-      index = ((vTerm.Period + m.NLag) * m.NEq +
+      index = ((vTerm.Period + m.getNLag()) * m.getNEq() +
 	       m.FindVariableIndex(vTerm.Name))
-	* m.NEq + eqno;
+	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
       pout.print("  h(" + indexPlus1 + ") = h(" + indexPlus1 + ")");
       if (side == AMAtoMatlab.Right_Side)

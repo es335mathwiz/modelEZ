@@ -22,6 +22,7 @@ options {
 
 PARSER_BEGIN(AMAtoC)
 package gov.frb.ma.msu.toC;
+import gov.frb.ma.msu.modelEZCommon.*;
 import java.io.*;
 
 public class AMAtoC {

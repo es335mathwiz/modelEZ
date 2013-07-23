@@ -1,9 +1,14 @@
 package gov.frb.ma.msu.toC;
 
+
+import gov.frb.ma.msu.modelEZCommon.Equation;
+import gov.frb.ma.msu.modelEZCommon.Variable;
+import gov.frb.ma.msu.modelEZCommon.ModelAbstrct;
+
 import java.io.*;
 
 
-public class Model 
+public class Model extends ModelAbstrct
 {
   String Name;  // name of model
   int NEq;         // number of equations
@@ -42,8 +47,8 @@ public class Model
 
     for (i = 0; i < NEq; i++)
     {
-	if ((Equations[i].LHS.PowerErrorCheck() > 0) ||
-	    (Equations[i].RHS.PowerErrorCheck() > 0)) {
+	if ((Equations[i].getLHS().PowerErrorCheck() > 0) ||
+	    (Equations[i].getRHS().PowerErrorCheck() > 0)) {
 	    System.err.print("Error in equation #" + (i+1) + ": ");
 	    System.err.print("Variables cannot be raised to a power nor ");
 	    System.err.print("appear\n                    in an exponent");
@@ -51,8 +56,8 @@ public class Model
 	    errorFound++;
 	}
 	
-	if ((Equations[i].LHS.ProductErrorCheck() > 1) ||
-	    (Equations[i].RHS.ProductErrorCheck() > 1)) {
+	if ((Equations[i].getLHS().ProductErrorCheck() > 1) ||
+	    (Equations[i].getRHS().ProductErrorCheck() > 1)) {
 	    System.err.print("Error in equation #" + (i+1) + ": ");
 	    System.err.println("Equation has additive constant or is nonlinear");
 	    System.err.println("                    in its variables.");
@@ -93,7 +98,7 @@ public class Model
     // returns the index of the equation in Equations
     // that matches the String s, or -1 if there is no match.
     int i = 0;
-    while ((i < NEq) && !(Equations[i].Name.equals(s)))
+    while ((i < NEq) && !(Equations[i].getName().equals(s)))
       i++;
     if (i < NEq)
       return i;
@@ -105,7 +110,7 @@ public class Model
     // returns the index of the variable in Variables whose
     // name matches the String s, or -1 if there is no match.
     int i = 0;
-    while ((i < NVars) && !((Variables[i].Name).equals(s)))
+    while ((i < NVars) && !((Variables[i].getName()).equals(s)))
       i++;
     if (i < NVars)
       return i;
@@ -168,12 +173,12 @@ public class Model
 
 	for (i = 0; i < NEq; i++)
 	    dataPS.println("  eqname[" + (i+1) + "] = '" +
-			   Equations[i].Name + "';");
+			   Equations[i].getName() + "';");
 	dataPS.println("  eqname_ = char(eqname);");
 	dataPS.println();
 
 	for (i = 0; i < NEq; i++) {
-	    dataPS.print("  eqtype[" + (i+1) + "][1] = " + Equations[i].EqType +
+	    dataPS.print("  eqtype[" + (i+1) + "][1] = " + Equations[i].getEqType() +
 			   ";   ");
 	    if (i % 3 == 2)
 	      dataPS.println();
@@ -191,7 +196,7 @@ public class Model
 
 	for (i = 0; i < NVars; i++)
 	  dataPS.println("  endog[" + (i+1) + "] = '" +
-			 Variables[i].Name + "';");
+			 Variables[i].getName() + "';");
 	dataPS.println("  endog_ = char(endog);");
 	dataPS.println();
 
@@ -207,7 +212,7 @@ public class Model
 	dataPS.print("\n");
 	
 	for (i = 0; i < NEq; i++) {
-	  dataPS.print("  vtype[" + (i+1) + "][1] = " + Variables[i].DataType +
+	  dataPS.print("  vtype[" + (i+1) + "][1] = " + Variables[i].getDataType() +
 		       ";   ");
 	  if (i % 3 == 2)
 	    dataPS.println();
@@ -252,13 +257,13 @@ public class Model
       matrixPS.println();
 
       for (i = 0; i < NEq; i++) {
-	Equations[i].LHS.PrintGMatrixEntries(this, i, AMAtoC.Left_Side,
+	Equations[i].getLHS().PrintGMatrixEntries(this, i, AMAtoC.Left_Side,
 					     matrixPS);
-	Equations[i].RHS.PrintGMatrixEntries(this, i, AMAtoC.Right_Side,
+	Equations[i].getRHS().PrintGMatrixEntries(this, i, AMAtoC.Right_Side,
 					     matrixPS);
-	Equations[i].LHS.PrintHMatrixEntries(this, i, AMAtoC.Left_Side,
+	Equations[i].getLHS().PrintHMatrixEntries(this, i, AMAtoC.Left_Side,
 					     matrixPS);
-	Equations[i].RHS.PrintHMatrixEntries(this, i, AMAtoC.Right_Side,
+	Equations[i].getRHS().PrintHMatrixEntries(this, i, AMAtoC.Right_Side,
 					     matrixPS);
       }
 
@@ -273,6 +278,7 @@ public class Model
       System.err.println("ERROR: " + e.getMessage());
     }
   }
+
   
 }
 

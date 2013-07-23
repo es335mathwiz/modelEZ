@@ -1,7 +1,5 @@
 package gov.frb.ma.msu.modelEZCommon;
 
-import gov.frb.ma.msu.toMatlab.Model;
-
 import java.io.*;
 
 public class SumNode extends Node
@@ -37,13 +35,13 @@ public class SumNode extends Node
       return getSummand2().FindVariable();
   }
 
-  public void PrintGMatrixEntries(Model m, int eqno, int side,
+  public void PrintGMatrixEntries(ModelAbstrct m, int eqno, int side,
 				  PrintStream pout) {
     getSummand1().PrintGMatrixEntries(m, eqno, side, pout);
     getSummand2().PrintGMatrixEntries(m, eqno, side, pout);
   }
 
-  public void PrintHMatrixEntries(Model m, int eqno, int side,
+  public void PrintHMatrixEntries(ModelAbstrct m, int eqno, int side,
 				  PrintStream pout) {
     getSummand1().PrintHMatrixEntries(m, eqno, side, pout);
     getSummand2().PrintHMatrixEntries(m, eqno, side, pout);

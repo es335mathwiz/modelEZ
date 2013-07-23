@@ -1,7 +1,5 @@
 package gov.frb.ma.msu.modelEZCommon;
 
-import gov.frb.ma.msu.toMatlab.Model;
-
 import java.io.*;
 
 public class PowerNode extends Node
@@ -31,7 +29,7 @@ public class PowerNode extends Node
       return null;
     }
 
-    public void PrintGMatrixEntries(Model m, int eqno, int side,
+    public void PrintGMatrixEntries(ModelAbstrct m, int eqno, int side,
 				    PrintStream pout) {
       int eqnoPlus1;
       eqnoPlus1 = eqno + 1;
@@ -40,7 +38,7 @@ public class PowerNode extends Node
       System.exit(1);
     }
   
-  public void PrintHMatrixEntries(Model m, int eqno, int side,
+  public void PrintHMatrixEntries(ModelAbstrct m, int eqno, int side,
 				  PrintStream pout) {
     int eqnoPlus1 = eqno + 1;
     System.err.println("Error in equation " + eqnoPlus1 +

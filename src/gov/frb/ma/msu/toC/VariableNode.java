@@ -1,5 +1,6 @@
 package gov.frb.ma.msu.toC;
-
+import gov.frb.ma.msu.modelEZCommon.Node;
+import gov.frb.ma.msu.modelEZCommon.ModelAbstrct;
 import java.io.*;
 
 
@@ -33,14 +34,14 @@ public class VariableNode extends Node
     return this;
   }
 
-  public void PrintGMatrixEntries(Model m, int eqno, int side,
+  public void PrintGMatrixEntries(ModelAbstrct m, int eqno, int side,
 				  PrintStream pout) {
     int index;
     int indexPlus1;
     if ((Period <= 0) && (ELag == AMAtoC.No)) {
-      index = ((Period + m.NLag) * m.NEq +
+      index = ((Period + m.getNLag()) * m.getNEq() +
 	       m.FindVariableIndex(Name))
-	* m.NEq + eqno;
+	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
       pout.print("  g[" + indexPlus1 + "] = g[" + indexPlus1 + "]");
       if (side == AMAtoC.Left_Side)
@@ -50,13 +51,13 @@ public class VariableNode extends Node
     }
   }
 
-  public void PrintHMatrixEntries(Model m, int eqno, int side,
+  public void PrintHMatrixEntries(ModelAbstrct m, int eqno, int side,
 				  PrintStream pout) {
     int index;
     int indexPlus1;
     if ((Period > 0 ) || (ELag == AMAtoC.Yes)) {
-      index = ((Period + m.NLag) * m.NEq + m.FindVariableIndex(Name))
-	* m.NEq + eqno;
+      index = ((Period + m.getNLag()) * m.getNEq() + m.FindVariableIndex(Name))
+	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
       pout.print("  h[" + indexPlus1 + "] = h[" + indexPlus1 + "]");
       if (side == AMAtoC.Left_Side)

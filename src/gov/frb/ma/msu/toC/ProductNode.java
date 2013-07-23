@@ -1,5 +1,7 @@
 package gov.frb.ma.msu.toC;
-
+import gov.frb.ma.msu.modelEZCommon.ModelAbstrct;
+import gov.frb.ma.msu.modelEZCommon.Node;
+import gov.frb.ma.msu.modelEZCommon.SumNode;
 import java.io.*;
 
 public class ProductNode extends Node 
@@ -38,8 +40,8 @@ public class ProductNode extends Node
     if ((left instanceof SumNode) && 
     	!(right instanceof SumNode))
       {
-	pn1 = new ProductNode(((SumNode)left).Summand1, right);
-	pn2 = new ProductNode(((SumNode)left).Summand2, right.CopySubtree());
+	pn1 = new ProductNode(((SumNode)left).getSummand1(), right);
+	pn2 = new ProductNode(((SumNode)left).getSummand2(), right.CopySubtree());
 	n1 = pn1.ExpandSubtree();
 	n2 = pn2.ExpandSubtree();
 	sn1 = new SumNode(n1, n2);
@@ -48,9 +50,9 @@ public class ProductNode extends Node
     else if (!(left instanceof SumNode) &&
 	     (right instanceof SumNode))
       {
- 	pn1 = new ProductNode(left, ((SumNode)right).Summand1);
+ 	pn1 = new ProductNode(left, ((SumNode)right).getSummand1());
  	pn2 = new ProductNode(left.CopySubtree(), 
-			      ((SumNode)right).Summand2);
+			      ((SumNode)right).getSummand2());
 	n1 = pn1.ExpandSubtree();
 	n2 = pn2.ExpandSubtree();
 	sn1 = new SumNode(n1, n2);
@@ -59,14 +61,14 @@ public class ProductNode extends Node
     else if ((left instanceof SumNode) &&
 	     (right instanceof SumNode))
     {
-      pn1 = new ProductNode(((SumNode)left).Summand1,
-			    ((SumNode)right).Summand1);
-      pn2 = new ProductNode(((SumNode)left).Summand1.CopySubtree(),
-			    ((SumNode)right).Summand2);
-      pn3 = new ProductNode(((SumNode)left).Summand2,
-			    ((SumNode)right).Summand1.CopySubtree());
-      pn4 = new ProductNode(((SumNode)left).Summand2.CopySubtree(), 
-			    ((SumNode)right).Summand2.CopySubtree());
+      pn1 = new ProductNode(((SumNode)left).getSummand1(),
+			    ((SumNode)right).getSummand1());
+      pn2 = new ProductNode(((SumNode)left).getSummand1().CopySubtree(),
+			    ((SumNode)right).getSummand2());
+      pn3 = new ProductNode(((SumNode)left).getSummand2(),
+			    ((SumNode)right).getSummand1().CopySubtree());
+      pn4 = new ProductNode(((SumNode)left).getSummand2().CopySubtree(), 
+			    ((SumNode)right).getSummand2().CopySubtree());
       sn1 = new SumNode(pn1, pn2);
       sn2 = new SumNode(pn3, pn4);
       n1 = sn1.ExpandSubtree();
@@ -95,7 +97,7 @@ public class ProductNode extends Node
       return Multiplicand2.FindVariable();
   }
 
-  public void PrintGMatrixEntries(Model m, int eqno, int side,
+  public void PrintGMatrixEntries(ModelAbstrct m, int eqno, int side,
 				  PrintStream pout) {
     int eqnoPlus1;
     int index;
@@ -111,9 +113,9 @@ public class ProductNode extends Node
     }
     vTerm = (VariableNode) term;
     if ((vTerm.Period <= 0) && (vTerm.ELag == AMAtoC.No)) {
-      index = ((vTerm.Period + m.NLag) * m.NEq +
+      index = ((vTerm.Period + m.getNLag()) * m.getNEq() +
 	       m.FindVariableIndex(vTerm.Name))
-	* m.NEq + eqno;
+	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
       pout.print("  g[" + indexPlus1 + "] = g[" + indexPlus1 + "]");
       if (side == AMAtoC.Right_Side)
@@ -125,7 +127,7 @@ public class ProductNode extends Node
     }
   }
 
-  public void PrintHMatrixEntries(Model m, int eqno, int side,
+  public void PrintHMatrixEntries(ModelAbstrct m, int eqno, int side,
 				  PrintStream pout) {
     int eqnoPlus1;
     int index;
@@ -141,9 +143,9 @@ public class ProductNode extends Node
     }
     vTerm = (VariableNode) term;
     if ((vTerm.Period > 0) || (vTerm.ELag == AMAtoC.Yes)) {
-      index = ((vTerm.Period + m.NLag) * m.NEq +
+      index = ((vTerm.Period + m.getNLag()) * m.getNEq() +
 	       m.FindVariableIndex(vTerm.Name))
-	* m.NEq + eqno;
+	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
       pout.print("  h[" + indexPlus1 + "] = h[" + indexPlus1 + "]");
       if (side == AMAtoC.Right_Side)
@@ -183,5 +185,4 @@ public class ProductNode extends Node
   }
   
 } // class ProductNode
-
 

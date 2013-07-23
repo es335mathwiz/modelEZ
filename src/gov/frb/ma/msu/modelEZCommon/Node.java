@@ -1,6 +1,5 @@
 package gov.frb.ma.msu.modelEZCommon;
-
-import gov.frb.ma.msu.toMatlab.Model;
+import gov.frb.ma.msu.modelEZCommon.ModelAbstrct;
 
 import java.io.*;
 
@@ -21,9 +20,9 @@ public abstract class Node
   // FindVariable() returns the first VariableNode it finds in the subtree
   //  rooted at this Node.
   public abstract Node FindVariable();
-  public abstract void PrintGMatrixEntries(Model m, int eqno,
+  public abstract void PrintGMatrixEntries(ModelAbstrct m, int eqno,
 					   int side, PrintStream pout);
-  public abstract void PrintHMatrixEntries(Model m, int eqno,
+  public abstract void PrintHMatrixEntries(ModelAbstrct m, int eqno,
 					   int side, PrintStream pout);
   public abstract void PrintSubtree();
   public abstract void PrintTerm(PrintStream pout);
