@@ -1,6 +1,6 @@
 package gov.frb.ma.msu.toC;
 import gov.frb.ma.msu.modelEZCommon.Node;
-import gov.frb.ma.msu.modelEZCommon.ModelAbstrct;
+import gov.frb.ma.msu.modelEZCommon.Model;
 import java.io.*;
 
 
@@ -34,7 +34,7 @@ public class VariableNode extends Node
     return this;
   }
 
-  public void PrintGMatrixEntries(ModelAbstrct m, int eqno, int side,
+  public void PrintGMatrixEntries(Model m, int eqno, int side,
 				  PrintStream pout) {
     int index;
     int indexPlus1;
@@ -51,7 +51,7 @@ public class VariableNode extends Node
     }
   }
 
-  public void PrintHMatrixEntries(ModelAbstrct m, int eqno, int side,
+  public void PrintHMatrixEntries(Model m, int eqno, int side,
 				  PrintStream pout) {
     int index;
     int indexPlus1;

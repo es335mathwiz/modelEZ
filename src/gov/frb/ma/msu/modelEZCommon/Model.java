@@ -5,7 +5,7 @@ import gov.frb.ma.msu.toMatlab.AMAtoMatlab;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 
-public class ModelAbstrct {
+public class Model {
 
 	protected String Name;
 	protected int NEq;
@@ -17,10 +17,17 @@ public class ModelAbstrct {
 	protected int NVars;
 	protected int NCoeffs;
 
-	public ModelAbstrct() {
+	public Model() {
 		super();
 	}
-
+	 public Model(String s) {
+	      Name = s;
+	      NEq = 0;
+	      setNLag(0);
+	      setNLead(0);
+	      NVars = 0;
+	      NCoeffs = 0;
+	  }
 	public int getNEq() { return NEq; }
 
 	public int ErrorCheck() { 
