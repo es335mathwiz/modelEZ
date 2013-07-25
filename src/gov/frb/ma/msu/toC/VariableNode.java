@@ -1,6 +1,7 @@
 package gov.frb.ma.msu.toC;
 import gov.frb.ma.msu.modelEZCommon.Node;
 import gov.frb.ma.msu.modelEZCommon.Model;
+
 import java.io.*;
 
 
@@ -43,7 +44,7 @@ public class VariableNode extends Node
 	       m.FindVariableIndex(Name))
 	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
-      pout.print("  g[" + indexPlus1 + "] = g[" + indexPlus1 + "]");
+      pout.print("  g[" + index + "] = g[" + index + "]");
       if (side == AMAtoC.Left_Side)
 	pout.print(" + 1;\n");
       else
@@ -59,7 +60,7 @@ public class VariableNode extends Node
       index = ((Period + m.getNLag()) * m.getNEq() + m.FindVariableIndex(Name))
 	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
-      pout.print("  h[" + indexPlus1 + "] = h[" + indexPlus1 + "]");
+      pout.print("  h[" + index + "] = h[" + index + "]");
       if (side == AMAtoC.Left_Side)
 	pout.print(" + 1;\n");
       else
@@ -89,6 +90,18 @@ public class VariableNode extends Node
   public int ProductErrorCheck() {
     return 1;
     }
+//
+//@Override
+//public void PrintGMatrixEntries(Model m, int eqno, int side, PrintStream pout) {
+//	// TODO Auto-generated method stub
+//	this.PrintGMatrixEntries(m, eqno, side, pout);
+//}
+//
+//@Override
+//public void PrintHMatrixEntries(Model m, int eqno, int side, PrintStream pout) {
+//	// TODO Auto-generated method stub
+//this.PrintHMatrixEntries(m, eqno, side, pout)	;
+//}
   
 } // class VariableNode
 

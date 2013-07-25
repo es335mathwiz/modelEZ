@@ -2,6 +2,7 @@ package gov.frb.ma.msu.toC;
 import gov.frb.ma.msu.modelEZCommon.Model;
 import gov.frb.ma.msu.modelEZCommon.Node;
 import gov.frb.ma.msu.modelEZCommon.SumNode;
+
 import java.io.*;
 
 public class ProductNode extends Node 
@@ -183,6 +184,18 @@ public class ProductNode extends Node
     return (Multiplicand1.ProductErrorCheck() +
 	    Multiplicand2.ProductErrorCheck());
   }
-  
+//
+//@Override
+//public void PrintGMatrixEntries(Model m, int eqno, int side, PrintStream pout) {
+//	// TODO Auto-generated method stub
+//this.PrintGMatrixEntries(m, eqno, side, pout);
+//}
+//
+//@Override
+//public void PrintHMatrixEntries(Model m, int eqno, int side, PrintStream pout) {
+//	// TODO Auto-generated method stub
+//this.PrintHMatrixEntries(m, eqno, side, pout);	
+//}
+//  
 } // class ProductNode
 

@@ -56,7 +56,7 @@ public class AMAtoC {
     public static final int Cannot_Allocate_Memory = 2;
 
   static java.util.Stack argStack = new java.util.Stack();
-  static Model m;
+  static ModelToC m;
 
 private static boolean alreadyInitializedQ = false;
 public static void initOnce(java.io.InputStream stream) {
@@ -104,14 +104,13 @@ alreadyInitializedQ = true;}
     String PathName;
     String FileName;
     int lastSlashIndex;
-
- //   if (args.length == 1) {
-      if (args.length == 0) {
-//	System.err.println("AMAtoC Java Parser Version 1.03: Reading from file " +
-//                           args[0] + "...");
+   if (args.length == 1) {
+//      if (args.length == 0) {
+	System.err.println("AMAtoC Java Parser Version 1.03: Reading from file " +
+                           args[0] + "...");
         try {
-//	  PathName = args[0];
-	  PathName = "mods/antulio.mod";
+	  PathName = args[0];
+//	  PathName = "mods/antulio";
 	  lastSlashIndex = PathName.lastIndexOf('/');   // Real OS's
 	  if (lastSlashIndex < 0)
 	    lastSlashIndex = PathName.lastIndexOf('\\'); // Windows
@@ -119,7 +118,7 @@ alreadyInitializedQ = true;}
 	    FileName = PathName;
           else
 	    FileName = PathName.substring(lastSlashIndex+1);            
-	  m = new Model(FileName);
+	  m = new ModelToC(FileName);
 //	  parser = new AMAtoC(new java.io.FileInputStream(PathName));
 	  ReInit(new java.io.FileInputStream(PathName));
         } catch (java.io.FileNotFoundException e) {
@@ -132,6 +131,7 @@ alreadyInitializedQ = true;}
     else {
       System.err.println("AMAtoC Java Parser 1.03 usage is:");
       System.err.println("         java AMAtoC inputfile");
+      System.err.println("args length="+args.length);
       return(2);
     }
 
@@ -359,7 +359,7 @@ void term() :
 	    else
 		{
 		ConstantNode cn1 = new ConstantNode(-1.0);
-		PowerNode pown1 = new PowerNode(n1, cn1);
+		PowerNodeToC pown1 = new PowerNodeToC(n1, cn1);
 		argStack.push(new ProductNode(n2, pown1));
 		}
 	}
@@ -373,7 +373,7 @@ void factor() :
 	{
 	    Node n1 = ((Node) argStack.pop());
 	    Node n2 = ((Node) argStack.pop());
-	    argStack.push(new PowerNode(n2, n1));
+	    argStack.push(new PowerNodeToC(n2, n1));
 	}
 	)*
 }

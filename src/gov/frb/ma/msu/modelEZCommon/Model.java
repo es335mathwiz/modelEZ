@@ -12,7 +12,7 @@ public class Model {
 	private int NLag;
 	private int NLead;
 	private Equation[] Equations = new Equation[AMAtoMatlab.Max_Array_Size];
-	String[] Coefficients = new String[AMAtoMatlab.Max_Array_Size];
+	private String[] Coefficients = new String[AMAtoMatlab.Max_Array_Size];
 	private Variable[] Variables = new Variable[AMAtoMatlab.Max_Array_Size];
 	protected int NVars;
 	protected int NCoeffs;
@@ -70,7 +70,7 @@ public class Model {
 	}
 
 	public void AddCoefficient(String s) {
-	Coefficients[NCoeffs] = s;
+	getCoefficients()[NCoeffs] = s;
 	NCoeffs++;
 	}
 
@@ -83,7 +83,7 @@ public class Model {
 	    // returns the index of the String in Coefficients
 	    // that matches the String s, or -1 if there is no match.
 	    int i = 0;
-	    while ((i < NCoeffs) && !(Coefficients[i].equals(s)))
+	    while ((i < NCoeffs) && !(getCoefficients()[i].equals(s)))
 	      i++;
 	    if (i < NCoeffs)
 	      return i;
@@ -190,7 +190,7 @@ public class Model {
 		dataPS.println();
 	
 		for (i = 0; i < NCoeffs; i++)
-		dataPS.println("  param(" + (i+1) + ") = cellstr('" + Coefficients[i]
+		dataPS.println("  param(" + (i+1) + ") = cellstr('" + getCoefficients()[i]
 			       + "');");
 		dataPS.println("  param_ = char(param);");
 		dataPS.println();
@@ -292,6 +292,12 @@ public class Model {
 
 	public int getNLead() {
 		return NLead;
+	}
+	public String[] getCoefficients() {
+		return Coefficients;
+	}
+	public void setCoefficients(String[] coefficients) {
+		Coefficients = coefficients;
 	}
 
 }
