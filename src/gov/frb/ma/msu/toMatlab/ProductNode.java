@@ -3,7 +3,6 @@ package gov.frb.ma.msu.toMatlab;
 import gov.frb.ma.msu.modelEZCommon.Model;
 import gov.frb.ma.msu.modelEZCommon.Node;
 import gov.frb.ma.msu.modelEZCommon.SumNode;
-
 import java.io.*;
 
 public class ProductNode extends Node 
@@ -185,6 +184,7 @@ public class ProductNode extends Node
     return (Multiplicand1.ProductErrorCheck() +
 	    Multiplicand2.ProductErrorCheck());
   }
+
   
 } // class ProductNode
 

@@ -184,18 +184,6 @@ public class ProductNode extends Node
     return (Multiplicand1.ProductErrorCheck() +
 	    Multiplicand2.ProductErrorCheck());
   }
-//
-//@Override
-//public void PrintGMatrixEntries(Model m, int eqno, int side, PrintStream pout) {
-//	// TODO Auto-generated method stub
-//this.PrintGMatrixEntries(m, eqno, side, pout);
-//}
-//
-//@Override
-//public void PrintHMatrixEntries(Model m, int eqno, int side, PrintStream pout) {
-//	// TODO Auto-generated method stub
-//this.PrintHMatrixEntries(m, eqno, side, pout);	
-//}
-//  
+
 } // class ProductNode
 

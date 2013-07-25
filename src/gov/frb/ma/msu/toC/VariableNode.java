@@ -38,12 +38,10 @@ public class VariableNode extends Node
   public void PrintGMatrixEntries(Model m, int eqno, int side,
 				  PrintStream pout) {
     int index;
-    int indexPlus1;
     if ((Period <= 0) && (ELag == AMAtoC.No)) {
       index = ((Period + m.getNLag()) * m.getNEq() +
 	       m.FindVariableIndex(Name))
 	* m.getNEq() + eqno;
-      indexPlus1 = index + 1;
       pout.print("  g[" + index + "] = g[" + index + "]");
       if (side == AMAtoC.Left_Side)
 	pout.print(" + 1;\n");
@@ -55,11 +53,9 @@ public class VariableNode extends Node
   public void PrintHMatrixEntries(Model m, int eqno, int side,
 				  PrintStream pout) {
     int index;
-    int indexPlus1;
     if ((Period > 0 ) || (ELag == AMAtoC.Yes)) {
       index = ((Period + m.getNLag()) * m.getNEq() + m.FindVariableIndex(Name))
 	* m.getNEq() + eqno;
-      indexPlus1 = index + 1;
       pout.print("  h[" + index + "] = h[" + index + "]");
       if (side == AMAtoC.Left_Side)
 	pout.print(" + 1;\n");
@@ -90,18 +86,7 @@ public class VariableNode extends Node
   public int ProductErrorCheck() {
     return 1;
     }
-//
-//@Override
-//public void PrintGMatrixEntries(Model m, int eqno, int side, PrintStream pout) {
-//	// TODO Auto-generated method stub
-//	this.PrintGMatrixEntries(m, eqno, side, pout);
-//}
-//
-//@Override
-//public void PrintHMatrixEntries(Model m, int eqno, int side, PrintStream pout) {
-//	// TODO Auto-generated method stub
-//this.PrintHMatrixEntries(m, eqno, side, pout)	;
-//}
+
   
 } // class VariableNode
 
