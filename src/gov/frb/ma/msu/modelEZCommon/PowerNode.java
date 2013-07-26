@@ -4,16 +4,16 @@ import java.io.*;
 
 public class PowerNode extends Node
 {
-    Node Base;
-    Node Exponent;
+    private Node Base;
+    private Node Exponent;
 
     public PowerNode(Node b, Node e) {
-	Base = b;
-	Exponent = e;
+	setBase(b);
+	setExponent(e);
     }
 
     public Node CopySubtree() { 
-      PowerNode pn = new PowerNode(Base.CopySubtree(), Exponent.CopySubtree());
+      PowerNode pn = new PowerNode(getBase().CopySubtree(), getExponent().CopySubtree());
       return pn;
     }
 
@@ -22,7 +22,7 @@ public class PowerNode extends Node
     }
 
     public int CountVariables() {
-      return Base.CountVariables();
+      return getBase().CountVariables();
     }
 
     public Node FindVariable() {
@@ -47,27 +47,43 @@ public class PowerNode extends Node
   }
   
     public void PrintSubtree() {
-      Base.PrintSubtree();
+      getBase().PrintSubtree();
       System.out.print("^(");
-      Exponent.PrintSubtree();
+      getExponent().PrintSubtree();
       System.out.print(")");
     }
 
     public void PrintTerm(PrintStream pout) {
     pout.print("(");
-    Base.PrintTerm(pout);
+    getBase().PrintTerm(pout);
     pout.print("^");
-    Exponent.PrintTerm(pout);
+    getExponent().PrintTerm(pout);
     pout.print(")");
   }
 
     public int PowerErrorCheck() {
-      return (Base.CountVariables() + Exponent.CountVariables());
+      return (getBase().CountVariables() + getExponent().CountVariables());
     }
 
   public int ProductErrorCheck() {
-    return (Base.CountVariables() + Exponent.CountVariables());
+    return (getBase().CountVariables() + getExponent().CountVariables());
   }
+
+public Node getBase() {
+	return Base;
+}
+
+public void setBase(Node base) {
+	Base = base;
+}
+
+public Node getExponent() {
+	return Exponent;
+}
+
+public void setExponent(Node exponent) {
+	Exponent = exponent;
+}
     
 } // class PowerNode
 
