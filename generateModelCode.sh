@@ -1,5 +1,5 @@
 #!/bin/bash
-parserJarLoc=/msu/home/m1gsa00/git/verifyModelEZaddC/bin/modelEZtoC.jar
+parserJarLoc=/msu/home/m1gsa00/git/verifyModelEZaddC/modelEZtoC.jar
 javaCmd=java
 CC=gcc
 command -v $CC >/dev/null 2>&1 || { echo >&2 "Could not find c compiler. Aborting."; exit 1; }

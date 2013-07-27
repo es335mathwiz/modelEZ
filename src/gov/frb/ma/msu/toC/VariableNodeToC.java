@@ -5,21 +5,21 @@ import gov.frb.ma.msu.modelEZCommon.Model;
 import java.io.*;
 
 
-public class VariableNode extends Node 
+public class VariableNodeToC extends Node 
 {
   String Name;
   int Period;
   int ELag;   // this can only be AMA.Yes or AMA.No. is there a good way
   // to enforce this?
   
-  public VariableNode(String s, int p, int e) {
+  public VariableNodeToC(String s, int p, int e) {
     Name = s;
     Period = p;
     ELag = e;
   }
   
   public Node CopySubtree() { 
-    VariableNode vn = new VariableNode(Name, Period, ELag);
+    VariableNodeToC vn = new VariableNodeToC(Name, Period, ELag);
     return vn; 
   }
 

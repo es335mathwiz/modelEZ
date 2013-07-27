@@ -27,5 +27,8 @@ public class PowerNodeToC extends PowerNode {
     getExponent().PrintTerm(pout);
     pout.print(")");
   }
-
+    public Node CopySubtree() { 
+        PowerNodeToC pn = new PowerNodeToC(getBase().CopySubtree(), getExponent().CopySubtree());
+        return pn;
+      }
 }
