@@ -114,7 +114,20 @@ public class ModelToC extends Model {
 	
 	    try {
 	      matrixPS = new PrintStream(new FileOutputStream(matrixFileName));
+	  	int numCols=(getNLag()+1+getNLead())*NEq;
+        
+	      matrixPS.println("void getnumrows_(int *rows)");
+	      matrixPS.println("{");
+	      matrixPS.println("*rows = " + NEq +";");
+	      matrixPS.println("}");
 	      
+	      
+	      matrixPS.println("void getnumcols_(int *cols)");
+	      matrixPS.println("{");
+	      matrixPS.println("*cols =" + numCols + ";");
+	      matrixPS.println("}");
+	      	      
+      
 	     
 	      matrixPS.println("int " + lcName + "_AMA_matrices(double *paramvalues, double *cofg, double *cofh) {");
 	      matrixPS.println("//     This script will compute the G and H matrices.");

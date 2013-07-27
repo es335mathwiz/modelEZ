@@ -238,30 +238,7 @@ public class Model {
 	
 	    try {
 	      matrixPS = new PrintStream(new FileOutputStream(matrixFileName));
-	int numCols=(getNLag()+1+getNLead())*NEq;
-	        
-		      matrixPS.println("int getNumRows(int *rows)");
-		      matrixPS.println("{");
-		      matrixPS.println("int nr;");
-		      matrixPS.println("nr = " + NEq + ";");
-		      matrixPS.println("rows = &nr;");
-		      
-		      matrixPS.println("return(0);");
-		      matrixPS.println("}");
-		      
-		      
-		      matrixPS.println("int getNumCols(*cols)");
-		      matrixPS.println("{");
-		      
-		      matrixPS.println("int nc;");
-
-		      matrixPS.println("cols =" + numCols + ";");
-		      matrixPS.println("cols = &nc;");
-
-		      matrixPS.println("return(0);");
-		      matrixPS.println("}");
-		      	      
-	      
+      
 	      
 	      matrixPS.println("% " + lcName + "_AMA_matrices()");
 	      matrixPS.println("%     This script will compute the G and H matrices.");
