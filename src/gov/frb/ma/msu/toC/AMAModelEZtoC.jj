@@ -106,10 +106,10 @@ alreadyInitializedQ = true;}
     int lastSlashIndex;
       if (args.length == 0) {
         	System.err.println(
-        	  "AMAtoC Java Parser Version 1.03: Reading from file easyPow"
+        	  "AMAtoC Java Parser Version 1.03: Reading from file stickywage"
                             );
         try {
-	  PathName = "easyPow";
+	  PathName = "stickywage";
 	  lastSlashIndex = PathName.lastIndexOf('/');   // Real OS's
 	  if (lastSlashIndex < 0)
 	    lastSlashIndex = PathName.lastIndexOf('\\'); // Windows
