@@ -24,10 +24,13 @@ rm -f $1_AMA_data.c
 if [ -e $1_AMA_matrices.c ]
 then
 echo "Created .c file for generating sparseAMA hmat. Now trying to compile it."
+rm -f $1_AMA_matrices.o
 $CC -c $1_AMA_matrices.c
 if [ -e $1_AMA_matrices.o ]
 then
 	echo "Compilation successful."
+	echo "running make MODNAME="$1
+	make MODNAME=$1
 else
 	echo "Could not create a compilable h-matrix generator."
 	if [ -e $1_AMA_matrices.c ]
