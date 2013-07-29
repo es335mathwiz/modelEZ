@@ -3,9 +3,9 @@ templateHOME = /msu/home/m1wlg01/economistprojects/anderson/simpleSparseAMAExamp
 
 FSRCS = $(patsubst %.f, %.o, $(wildcard $(templateHOME)/src/main/ffiles/*.f))
 FOBJS = $(FSRCS:.f=.o) 
-POBJS = ./chrisSparseAMAExample.o    $(templateHOME)/cprintsparsewrapper.o  $(templateHOME)/parserwrapper.o  $(templateHOME)/conversionwrapper.o  $(templateHOME)/sparseamawrapper.o  $(templateHOME)/obtainsparsewrapper.o  $(templateHOME)/sparskit2.o  $(templateHOME)/sparseAMA.o  ./modelv1_AMA_matrices.o  $(templateHOME)/getmatwrapper.o  $(templateHOME)/csrdnswrapper.o
+POBJS = ./chrisSparseAMAExample.o  $(templateHOME)/getmat.o  $(templateHOME)/cprintsparsewrapper.o  $(templateHOME)/parserwrapper.o  $(templateHOME)/conversionwrapper.o  $(templateHOME)/sparseamawrapper.o  $(templateHOME)/obtainsparsewrapper.o  $(templateHOME)/sparskit2.o  $(templateHOME)/sparseAMA.o  ./$(MODNAME)_AMA_matrices.o  $(templateHOME)/getmatwrapper.o  $(templateHOME)/csrdnswrapper.o
 OBJS = $(FOBJS) $(POBJS)
-LOBJS = chrisSparseAMAExample.o modelv1_AMA_matrices.o
+LOBJS = chrisSparseAMAExample.o $(MODNAME)_AMA_matrices.o
 
 #Flags, Compilers, Linkers
 LINK = ifort
@@ -20,5 +20,5 @@ chrismodel: $(LOBJS)
 chrisSparseAMAExample.o: chrisSparseAMAExample.f90
 	$(FC)  -c -g chrisSparseAMAExample.f90 -fPIC
 
-modelv1_AMA_matrices.o : modelv1_AMA_matrices.c
-	$(CC) -c -g modelv1_AMA_matrices.c -I$(templateHOME)/src/main/include -shared -fPIC -o modelv1_AMA_matrices.o
+$(MODNAME)_AMA_matrices.o : $(MODNAME)_AMA_matrices.c
+	$(CC) -c -g $(MODNAME)_AMA_matrices.c -I$(templateHOME)/src/main/include -shared -fPIC -o $(MODNAME)_AMA_matrices.o

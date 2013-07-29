@@ -20,7 +20,6 @@ PROGRAM simpleSparseAMAExample
 ! params vector  needs to be set
 ! and the parser needs to be run
 IMPLICIT NONE
-
 INTEGER MAXELEMS
 INTEGER HROWS
 INTEGER HCOLS
@@ -82,12 +81,14 @@ DOUBLE PRECISION :: kss, gdpss, invss, css, rwss, mucss, lamss, kappap, kappaw
 integer :: rows, cols
 real(kind = 8), dimension(381) :: testhmat
 
-call getmatrixdimsfort("/msu/home/m1wlg01/economistprojects/anderson/simpleSparseAMAExample/willschrissparseama/sparseAMA/src/main/cfiles/inOutMats.mat","hmat",rows,cols)
+
+call getnumrows(rows)
+call getnumcols(cols)
 write(*,"(I5)")rows,cols
 
 
 !! zeroing the input matrices
-DO i = 1, 381
+DO i = 1, rows*cols
    hmatj(i) = 0
    hmat(i) = 0.0
    hmati(i) = 0
