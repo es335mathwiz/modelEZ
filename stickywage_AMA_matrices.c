@@ -6,9 +6,9 @@ void getnumcols_(int *cols)
 {
 *cols =108;
 }
-void getnumgcols_(int *gcols)
+void getnumgcols_(int *cols)
 {
-*gcols =72;
+*cols =72;
 }
 
 
@@ -254,6 +254,7 @@ h[i] = 0;
 
 return(0);
 }
+
 
 int parserwrapper_(double *params,double *g, double *h,double*hmat,int *HROWS,int *HCOLS) {
 
