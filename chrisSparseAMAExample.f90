@@ -44,8 +44,8 @@ INTEGER :: testnp
 real(KIND = 8), dimension(381) :: params, g, h
 character :: modname
 integer :: neq, nlag, nlead
-character, dimension(381) :: eqname_
-character, dimension(381) :: paramnames
+!character, dimension(381) :: eqname_
+!character, dimension(381) :: paramnames
 
 !! allocating the output matrices
 real(KIND = 8), dimension(381) :: newHmat

@@ -1,3 +1,22 @@
+int parserwrapper_(double *params,double *g, double *h,double*hmat,int *HROWS,int *HCOLS)
+{
+stickywage_AMA_matrices(params,g,h);
+int i;
+int k;
+int rows;
+int cols;
+int gcols;
+getnumrows_(&rows);
+getnumcols_(&cols);
+getnumgcols_(&gcols);
+hmat = h;
+for(i = 0;i < gcols;i++){
+for (k = 0;k < rows;k ++){
+hmat[rows*i+k] = hmat[rows*i+k] + g[rows*i + k];
+ }
+ }
+return(0);
+}
 void getnumrows_(int *rows)
 {
 *rows = 36;
@@ -10,8 +29,6 @@ void getnumgcols_(int *cols)
 {
 *cols =72;
 }
-
-
 int stickywage_AMA_matrices(double *paramvalues, double *cofg, double *cofh) {
 //     This script will compute the G and H matrices.
 #include <math.h>
@@ -253,34 +270,4 @@ h[i] = 0;
   cofh = h;
 
 return(0);
-}
-
-
-int parserwrapper_(double *params,double *g, double *h,double*hmat,int *HROWS,int *HCOLS) {
-
-
-  stickywage_AMA_matrices(params,g,h);
-  
-  int i;
-
-  int k;
-
-
-  int rows;
-  int cols;
-  int gcols;
-
-  getnumrows_(&rows);
-  getnumcols_(&cols);
-  getnumgcols_(&gcols);
-
-  hmat = h;
-
-  for(i = 0;i < gcols;i++){
-  for (k = 0;k < rows;k ++){
-     hmat[rows*i+k] = hmat[rows*i+k] + g[rows*i + k];
-   }
-    
-   }
-  return(0);
 }

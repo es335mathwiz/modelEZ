@@ -16,10 +16,89 @@ public class ModelToC extends Model {
 	    int i;
 	    PrintStream dataPS;
 	    PrintStream matrixPS;
+	    PrintStream templatePS;
 	    String lcName = Name;
 	    lcName.toLowerCase();
 	    String dataFileName = lcName + "_AMA_data.c";
 	    String matrixFileName = lcName + "_AMA_matrices.c";
+	    String templateFileName = lcName + "_AMA_template.f90";
+	    
+	    try {
+	    templatePS = new PrintStream(new FileOutputStream(templateFileName));
+	    templatePS.println("PROGRAM simpleSparseAMAExample");
+	    templatePS.println();
+	    templatePS.println("IMPLICIT NONE");
+	    templatePS.println("INTEGER :: MAXELEMS, HROWS, HCOLS, LEADS, qrows, qcols");
+	    templatePS.println("INTEGER, DIMENSION(" + (getNLag() + 1 + getNLead())*NEq + ") :: hmatj, hmati");
+	    templatePS.println("REAL(KIND = 8), DIMENSION(" + (getNLag() + 1 + getNLead())*NEq + ") :: hmat");
+	    
+	    templatePS.println();
+	    templatePS.println("INTEGER :: maxNumberOfHElements, aux, rowsinQ, essential, retCODE,i, maxSize, testnp");
+	    
+	    templatePS.println();
+	    templatePS.println("REAL(KIND = 8), DIMENSION(" + (getNLag() + 1 + getNLead())*NEq + ") ::params, g, h");
+	    templatePS.println();
+	    
+	    templatePS.println();
+	    templatePS.println("REAL(KIND = 8), DIMENSION(" + (getNLag() + 1 + getNLead())*NEq + ") :: newHmat, qmat, bmat, rootr, rooti");
+	    templatePS.println("INTEGER(KIND = 8), DIMENSION(" + (getNLag() + 1 + getNLead())*NEq + ") :: newHmatj, newHmati, qmatj, qmati, bmati, bmatj");
+	    templatePS.println("INTEGER, dimension(:), allocatable :: aPointerToVoid");
+	    templatePS.println("INTEGER :: DISCRETE_TIME, ierr");
+	    
+	    templatePS.println();
+	    templatePS.println("INTEGER :: rows, cols");
+	    templatePS.println();
+	    
+	    templatePS.println("DO i = 1, " + (getNLag() + 1 + getNLead())*NEq);
+	    templatePS.println("hmatj(i) = 0");
+	    templatePS.println("hmat(i) = 0.0");
+	    templatePS.println("hmati(i) = 0");
+	    templatePS.println("END DO");
+	    templatePS.println();
+	    
+	    templatePS.println();
+	    templatePS.println("MAXELEMS = " + (getNLag() + 1 + getNLead())*NEq);
+	    templatePS.println("HROWS =" + NEq);
+	    templatePS.println("HCOLS = " + (getNLag() + 1 + getNLead()));
+	    templatePS.println("LEADS = "  + getNLead());
+	    templatePS.println("DISCRETE_TIME = 1");
+	    templatePS.println("qrows = HROWS * LEADS");
+	    templatePS.println("qcols = HCOLS = HROWS");
+	    templatePS.println();
+	    
+	    templatePS.println();
+	    templatePS.println("call parserwrapper(params, g, h, hmat, HROWS, HCOLS)");
+	    templatePS.println("call conversionwrapper(HROWS, HCOLS, hmat, hmat, hmatj, hmati, ierr");
+	    templatePS.println("aux = 0");
+	    templatePS.println("rowsInQ = aux");
+	    templatePS.println("DO i = 1, HROWS");
+	    templatePS.println("   newHmati(i) = 0");
+	    templatePS.println("END DO");
+	    templatePS.println("maxSize = MAXELEMS");
+	    templatePS.println();
+	    
+	    templatePS.println();
+	    templatePS.println("call sparseamawrapper(maxSize, DISCRETE_TIME, HROWS, HCOLS, LEADS, hmat, hmatj, hmati, newHmat, newHmatj, newHmati, aux, rowsInQ, qmat, qmatj, qmati, essential, rootr, rooti, retCode, aPointerToVoid)");
+	    templatePS.println();
+	    
+	    templatePS.println();
+	    templatePS.println("call obtainsparsewrapper(maxSize, qrows, qcols, qmat, qmatj, qmati, bmat, bmatj, bmati, MAXELEMS, HROWS, HCOLS,LEADS)");
+	    templatePS.println();
+	    
+	    templatePS.println();
+	    templatePS.println("call csrdnswrapper(LEADS*HROWS,HCOLS,bmat,bmatj,bmati,bmat,ierr)");
+	    templatePS.println();
+	    
+	    templatePS.println();
+	    templatePS.println("STOP");
+	    templatePS.println("END PROGRAM simpleSparseAMAExample");
+	    templatePS.println();
+	    
+	    
+	    templatePS.close();
+	    } catch (Exception e) {
+		System.err.println("ERROR: " + e.getMessage());
+	    }
 	    
 	    try {
 		dataPS = new PrintStream(new FileOutputStream(dataFileName));
