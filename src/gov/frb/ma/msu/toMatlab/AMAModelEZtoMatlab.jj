@@ -20,11 +20,12 @@ options {
   FORCE_LA_CHECK = false;
 }
 
-PARSER_BEGIN(AMA)
-package gov.frb.ma.msu;
+PARSER_BEGIN(AMAtoMatlab)
+package gov.frb.ma.msu.toMatlab;
+import gov.frb.ma.msu.modelEZCommon.*;
 import java.io.*;
 
-public class AMA {
+public class AMAtoMatlab {
 
     // declare constants
 
@@ -59,7 +60,7 @@ public class AMA {
 
 private static boolean alreadyInitializedQ = false;
 public static void initOnce(java.io.InputStream stream) {
-if(!alreadyInitializedQ){AMA parser = new AMA(stream);
+if(!alreadyInitializedQ){AMAtoMatlab parser = new AMAtoMatlab(stream);
 alreadyInitializedQ = true;}
 }
 
@@ -67,7 +68,7 @@ alreadyInitializedQ = true;}
 
   public static void main(String args[]) throws ParseException {
 
-  AMA parser = new AMA(System.in);
+  AMAtoMatlab parser = new AMAtoMatlab(System.in);
   int status = 0;
   status = parser.runParser(args);
 
@@ -81,7 +82,7 @@ alreadyInitializedQ = true;}
 
   public static int notMain(String args[]) throws ParseException {
 
-  AMA parser = new AMA(System.in);
+  AMAtoMatlab parser = new AMAtoMatlab(System.in);
   int status = 0;
   status = parser.runParser(args);
 
@@ -106,7 +107,7 @@ alreadyInitializedQ = true;}
 
  //   if (args.length == 1) {
       if (args.length == 0) {
-//	System.err.println("AMA Java Parser Version 1.03: Reading from file " +
+//	System.err.println("AMAtoMatlab Java Parser Version 1.03: Reading from file " +
 //                           args[0] + "...");
         try {
 //	  PathName = args[0];
@@ -119,27 +120,27 @@ alreadyInitializedQ = true;}
           else
 	    FileName = PathName.substring(lastSlashIndex+1);            
 	  m = new Model(FileName);
-//	  parser = new AMA(new java.io.FileInputStream(PathName));
+//	  parser = new AMAtoMatlab(new java.io.FileInputStream(PathName));
 	  ReInit(new java.io.FileInputStream(PathName));
         } catch (java.io.FileNotFoundException e) {
-          System.err.println("AMA Java Parser Version 1.03: File " + args[0] +
+          System.err.println("AMAtoMatlab Java Parser Version 1.03: File " + args[0] +
                              " not found.");
           System.err.print(e.getMessage());
           return(1);
         }
     } 
     else {
-      System.err.println("AMA Java Parser 1.03 usage is:");
-      System.err.println("         java AMA inputfile");
+      System.err.println("AMAtoMatlab Java Parser 1.03 usage is:");
+      System.err.println("         java AMAtoMatlab inputfile");
       return(2);
     }
 
     try {
 //      parser.model();
       model();
-//      System.err.println("AMA Java Parser Version 1.03: No syntactic errors found.");
+//      System.err.println("AMAtoMatlab Java Parser Version 1.03: No syntactic errors found.");
     } catch (ParseException e) {
-      System.err.println("AMA Java Parser Version 1.03: Syntactic errors found.");
+      System.err.println("AMAtoMatlab Java Parser Version 1.03: Syntactic errors found.");
       System.err.print(e.getMessage());
       return(3);
     }
@@ -175,7 +176,7 @@ alreadyInitializedQ = true;}
     return(0);
   }
 }
-PARSER_END(AMA)
+PARSER_END(AMAtoMatlab)
 
 SKIP :
 {
@@ -271,24 +272,24 @@ void variabledef() :
 	 Variable v = new Variable(name);
 	 m.AddVariable(v);
          index = m.FindVariableIndex(name);
-         m.Variables[index].setDelay(0);
-         m.Variables[index].setDataType(Data);
+         m.getVariables()[index].setDelay(0);
+         m.getVariables()[index].setDataType(Data);
         }
     [ <INTEGER>
         { // set delay
-           m.Variables[index].setDelay((int) Integer.parseInt(token.image));
+           m.getVariables()[index].setDelay((int) Integer.parseInt(token.image));
         } ]
     [ ( x = <DATA> | x = <DTRM> | x = <NOTD> )
         { // set vtype entry
         switch (x.kind) {
 	 case DATA:
- 	    m.Variables[index].setDataType(Data);
+ 	    m.getVariables()[index].setDataType(Data);
 	    break;
 	 case NOTD:
- 	    m.Variables[index].setDataType(Notd);
+ 	    m.getVariables()[index].setDataType(Notd);
 	    break;
 	 case DTRM:
-	    m.Variables[index].setDataType(Dtrm);
+	    m.getVariables()[index].setDataType(Dtrm);
 	    break;
 	    }
         } 
@@ -321,8 +322,8 @@ void eqnlist() :
  	    index = m.getNEq();
  	    n1 = ((Node) argStack.pop());
  	    n2 = ((Node) argStack.pop());
- 	    m.Equations[index-1].setLHS(n2);
- 	    m.Equations[index-1].setRHS(n1);
+ 	    m.getEquations()[index-1].setLHS(n2);
+ 	    m.getEquations()[index-1].setRHS(n1);
 	 }
 	)+
 }
@@ -421,7 +422,7 @@ void element() :
 	{ /* variable with a lag */
 	ELag = No;
 	argStack.push(new VariableNode(VarName, -1 * Lag, ELag));
-	if (Lag > m.NLag)
+	if (Lag > m.getNLag())
 	  m.setNLag(Lag);
 	}
   | <ELAG> { Lag = 1; } 
@@ -446,7 +447,7 @@ void element() :
 	{ /* variable with an elag */
 	ELag = Yes;
 	argStack.push(new VariableNode(VarName, -1 * Lag, ELag));
-	if (Lag > m.NLag)
+	if (Lag > m.getNLag())
 	  m.setNLag(Lag);
 	}
   | <LEAD> { Lead = 1; }
@@ -471,7 +472,7 @@ void element() :
 	{ /* variable with a lead */
 	ELag = No;
 	argStack.push(new VariableNode(VarName, Lead, ELag));
-	if (Lead > m.NLead)
+	if (Lead > m.getNLead())
 	  m.setNLead(Lead);
 	}
   | <IDENTIFIER>

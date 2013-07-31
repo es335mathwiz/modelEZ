@@ -1,4 +1,7 @@
-package gov.frb.ma.msu;
+package gov.frb.ma.msu.toMatlab;
+
+import gov.frb.ma.msu.modelEZCommon.Model;
+import gov.frb.ma.msu.modelEZCommon.Node;
 
 import java.io.*;
 
@@ -37,13 +40,13 @@ public class VariableNode extends Node
 				  PrintStream pout) {
     int index;
     int indexPlus1;
-    if ((Period <= 0) && (ELag == AMA.No)) {
-      index = ((Period + m.NLag) * m.NEq +
+    if ((Period <= 0) && (ELag == AMAtoMatlab.No)) {
+      index = ((Period + m.getNLag()) * m.getNEq() +
 	       m.FindVariableIndex(Name))
-	* m.NEq + eqno;
+	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
-      pout.print("  g[" + indexPlus1 + "] = g[" + indexPlus1 + "]");
-      if (side == AMA.Left_Side)
+      pout.print("  g(" + indexPlus1 + ") = g(" + indexPlus1 + ")");
+      if (side == AMAtoMatlab.Left_Side)
 	pout.print(" + 1;\n");
       else
 	pout.print(" - 1;\n");
@@ -54,12 +57,12 @@ public class VariableNode extends Node
 				  PrintStream pout) {
     int index;
     int indexPlus1;
-    if ((Period > 0 ) || (ELag == AMA.Yes)) {
-      index = ((Period + m.NLag) * m.NEq + m.FindVariableIndex(Name))
-	* m.NEq + eqno;
+    if ((Period > 0 ) || (ELag == AMAtoMatlab.Yes)) {
+      index = ((Period + m.getNLag()) * m.getNEq() + m.FindVariableIndex(Name))
+	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
-      pout.print("  h[" + indexPlus1 + "] = h[" + indexPlus1 + "]");
-      if (side == AMA.Left_Side)
+      pout.print("  h(" + indexPlus1 + ") = h(" + indexPlus1 + ")");
+      if (side == AMAtoMatlab.Left_Side)
 	pout.print(" + 1;\n");
       else
 	pout.print(" - 1;\n");
@@ -67,7 +70,7 @@ public class VariableNode extends Node
   }
 
   public void PrintSubtree() {
-    if (ELag == AMA.Yes)
+    if (ELag == AMAtoMatlab.Yes)
       System.out.print("ELAG(" + Name + "," + (-1 * Period) + ")");
     else if (Period > 0)
       System.out.print(Name + "(" + Period + ")");

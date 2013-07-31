@@ -1,23 +1,25 @@
-package gov.frb.ma.msu;
+package gov.frb.ma.msu.toC;
+import gov.frb.ma.msu.modelEZCommon.Node;
+import gov.frb.ma.msu.modelEZCommon.Model;
 
 import java.io.*;
 
 
-public class VariableNode extends Node 
+public class VariableNodeToC extends Node 
 {
   String Name;
   int Period;
   int ELag;   // this can only be AMA.Yes or AMA.No. is there a good way
   // to enforce this?
   
-  public VariableNode(String s, int p, int e) {
+  public VariableNodeToC(String s, int p, int e) {
     Name = s;
     Period = p;
     ELag = e;
   }
   
   public Node CopySubtree() { 
-    VariableNode vn = new VariableNode(Name, Period, ELag);
+    VariableNodeToC vn = new VariableNodeToC(Name, Period, ELag);
     return vn; 
   }
 
@@ -36,14 +38,12 @@ public class VariableNode extends Node
   public void PrintGMatrixEntries(Model m, int eqno, int side,
 				  PrintStream pout) {
     int index;
-    int indexPlus1;
-    if ((Period <= 0) && (ELag == AMA.No)) {
-      index = ((Period + m.NLag) * m.NEq +
+    if ((Period <= 0) && (ELag == AMAtoC.No)) {
+      index = ((Period + m.getNLag()) * m.getNEq() +
 	       m.FindVariableIndex(Name))
-	* m.NEq + eqno;
-      indexPlus1 = index + 1;
-      pout.print("  g[" + indexPlus1 + "] = g[" + indexPlus1 + "]");
-      if (side == AMA.Left_Side)
+	* m.getNEq() + eqno;
+      pout.print("  g[" + index + "] = g[" + index + "]");
+      if (side == AMAtoC.Left_Side)
 	pout.print(" + 1;\n");
       else
 	pout.print(" - 1;\n");
@@ -53,13 +53,11 @@ public class VariableNode extends Node
   public void PrintHMatrixEntries(Model m, int eqno, int side,
 				  PrintStream pout) {
     int index;
-    int indexPlus1;
-    if ((Period > 0 ) || (ELag == AMA.Yes)) {
-      index = ((Period + m.NLag) * m.NEq + m.FindVariableIndex(Name))
-	* m.NEq + eqno;
-      indexPlus1 = index + 1;
-      pout.print("  h[" + indexPlus1 + "] = h[" + indexPlus1 + "]");
-      if (side == AMA.Left_Side)
+    if ((Period > 0 ) || (ELag == AMAtoC.Yes)) {
+      index = ((Period + m.getNLag()) * m.getNEq() + m.FindVariableIndex(Name))
+	* m.getNEq() + eqno;
+      pout.print("  h[" + index + "] = h[" + index + "]");
+      if (side == AMAtoC.Left_Side)
 	pout.print(" + 1;\n");
       else
 	pout.print(" - 1;\n");
@@ -67,7 +65,7 @@ public class VariableNode extends Node
   }
 
   public void PrintSubtree() {
-    if (ELag == AMA.Yes)
+    if (ELag == AMAtoC.Yes)
       System.out.print("ELAG(" + Name + "," + (-1 * Period) + ")");
     else if (Period > 0)
       System.out.print(Name + "(" + Period + ")");
@@ -88,6 +86,7 @@ public class VariableNode extends Node
   public int ProductErrorCheck() {
     return 1;
     }
+
   
 } // class VariableNode
 

@@ -1,19 +1,22 @@
-package gov.frb.ma.msu;
+package gov.frb.ma.msu.toC;
+import gov.frb.ma.msu.modelEZCommon.Model;
+import gov.frb.ma.msu.modelEZCommon.Node;
+import gov.frb.ma.msu.modelEZCommon.SumNode;
 
 import java.io.*;
 
-public class ProductNode extends Node 
+public class ProductNodeToC extends Node 
 {
     Node Multiplicand1;
     Node Multiplicand2;
 
-  public ProductNode(Node n1, Node n2) {
+  public ProductNodeToC(Node n1, Node n2) {
     Multiplicand1 = n1;
     Multiplicand2 = n2;
   }
   
   public Node CopySubtree() {
-    ProductNode pn = new ProductNode(Multiplicand1.CopySubtree(),
+    ProductNodeToC pn = new ProductNodeToC(Multiplicand1.CopySubtree(),
 				     Multiplicand2.CopySubtree());
     return pn; 
   }
@@ -23,10 +26,10 @@ public class ProductNode extends Node
     Node right;
     Node n1;
     Node n2;
-    ProductNode pn1;
-    ProductNode pn2;
-    ProductNode pn3;
-    ProductNode pn4;
+    ProductNodeToC pn1;
+    ProductNodeToC pn2;
+    ProductNodeToC pn3;
+    ProductNodeToC pn4;
     SumNode sn1;
     SumNode sn2;
     SumNode sn3;
@@ -38,8 +41,8 @@ public class ProductNode extends Node
     if ((left instanceof SumNode) && 
     	!(right instanceof SumNode))
       {
-	pn1 = new ProductNode(((SumNode)left).Summand1, right);
-	pn2 = new ProductNode(((SumNode)left).Summand2, right.CopySubtree());
+	pn1 = new ProductNodeToC(((SumNode)left).getSummand1(), right);
+	pn2 = new ProductNodeToC(((SumNode)left).getSummand2(), right.CopySubtree());
 	n1 = pn1.ExpandSubtree();
 	n2 = pn2.ExpandSubtree();
 	sn1 = new SumNode(n1, n2);
@@ -48,9 +51,9 @@ public class ProductNode extends Node
     else if (!(left instanceof SumNode) &&
 	     (right instanceof SumNode))
       {
- 	pn1 = new ProductNode(left, ((SumNode)right).Summand1);
- 	pn2 = new ProductNode(left.CopySubtree(), 
-			      ((SumNode)right).Summand2);
+ 	pn1 = new ProductNodeToC(left, ((SumNode)right).getSummand1());
+ 	pn2 = new ProductNodeToC(left.CopySubtree(), 
+			      ((SumNode)right).getSummand2());
 	n1 = pn1.ExpandSubtree();
 	n2 = pn2.ExpandSubtree();
 	sn1 = new SumNode(n1, n2);
@@ -59,14 +62,14 @@ public class ProductNode extends Node
     else if ((left instanceof SumNode) &&
 	     (right instanceof SumNode))
     {
-      pn1 = new ProductNode(((SumNode)left).Summand1,
-			    ((SumNode)right).Summand1);
-      pn2 = new ProductNode(((SumNode)left).Summand1.CopySubtree(),
-			    ((SumNode)right).Summand2);
-      pn3 = new ProductNode(((SumNode)left).Summand2,
-			    ((SumNode)right).Summand1.CopySubtree());
-      pn4 = new ProductNode(((SumNode)left).Summand2.CopySubtree(), 
-			    ((SumNode)right).Summand2.CopySubtree());
+      pn1 = new ProductNodeToC(((SumNode)left).getSummand1(),
+			    ((SumNode)right).getSummand1());
+      pn2 = new ProductNodeToC(((SumNode)left).getSummand1().CopySubtree(),
+			    ((SumNode)right).getSummand2());
+      pn3 = new ProductNodeToC(((SumNode)left).getSummand2(),
+			    ((SumNode)right).getSummand1().CopySubtree());
+      pn4 = new ProductNodeToC(((SumNode)left).getSummand2().CopySubtree(), 
+			    ((SumNode)right).getSummand2().CopySubtree());
       sn1 = new SumNode(pn1, pn2);
       sn2 = new SumNode(pn3, pn4);
       n1 = sn1.ExpandSubtree();
@@ -101,7 +104,7 @@ public class ProductNode extends Node
     int index;
     int indexPlus1;
     Node term;
-    VariableNode vTerm;
+    VariableNodeToC vTerm;
     term = FindVariable();
     if (term == null) {
       eqnoPlus1 = eqno + 1;
@@ -109,14 +112,14 @@ public class ProductNode extends Node
 			 ": No variable in term.");
       System.exit(1);
     }
-    vTerm = (VariableNode) term;
-    if ((vTerm.Period <= 0) && (vTerm.ELag == AMA.No)) {
-      index = ((vTerm.Period + m.NLag) * m.NEq +
+    vTerm = (VariableNodeToC) term;
+    if ((vTerm.Period <= 0) && (vTerm.ELag == AMAtoC.No)) {
+      index = ((vTerm.Period + m.getNLag()) * m.getNEq() +
 	       m.FindVariableIndex(vTerm.Name))
-	* m.NEq + eqno;
+	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
       pout.print("  g[" + indexPlus1 + "] = g[" + indexPlus1 + "]");
-      if (side == AMA.Right_Side)
+      if (side == AMAtoC.Right_Side)
 	pout.print(" - ");
       else
 	pout.print(" + ");
@@ -131,7 +134,7 @@ public class ProductNode extends Node
     int index;
     int indexPlus1;
     Node term;
-    VariableNode vTerm;
+    VariableNodeToC vTerm;
     term = FindVariable();
     if (term == null) {
       eqnoPlus1 = eqno + 1;
@@ -139,14 +142,14 @@ public class ProductNode extends Node
 			 ": No variable in term.");
       System.exit(1);
     }
-    vTerm = (VariableNode) term;
-    if ((vTerm.Period > 0) || (vTerm.ELag == AMA.Yes)) {
-      index = ((vTerm.Period + m.NLag) * m.NEq +
+    vTerm = (VariableNodeToC) term;
+    if ((vTerm.Period > 0) || (vTerm.ELag == AMAtoC.Yes)) {
+      index = ((vTerm.Period + m.getNLag()) * m.getNEq() +
 	       m.FindVariableIndex(vTerm.Name))
-	* m.NEq + eqno;
+	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
       pout.print("  h[" + indexPlus1 + "] = h[" + indexPlus1 + "]");
-      if (side == AMA.Right_Side)
+      if (side == AMAtoC.Right_Side)
 	pout.print(" - ");
       else
 	pout.print(" + ");
@@ -181,7 +184,6 @@ public class ProductNode extends Node
     return (Multiplicand1.ProductErrorCheck() +
 	    Multiplicand2.ProductErrorCheck());
   }
-  
-} // class ProductNode
 
+} // class ProductNode
 

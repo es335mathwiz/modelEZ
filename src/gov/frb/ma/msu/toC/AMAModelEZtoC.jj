@@ -20,11 +20,12 @@ options {
   FORCE_LA_CHECK = false;
 }
 
-PARSER_BEGIN(AMA)
-package gov.frb.ma.msu;
+PARSER_BEGIN(AMAtoC)
+package gov.frb.ma.msu.toC;
+import gov.frb.ma.msu.modelEZCommon.*;
 import java.io.*;
 
-public class AMA {
+public class AMAtoC {
 
     // declare constants
 
@@ -55,11 +56,11 @@ public class AMA {
     public static final int Cannot_Allocate_Memory = 2;
 
   static java.util.Stack argStack = new java.util.Stack();
-  static Model m;
+  static ModelToC m;
 
 private static boolean alreadyInitializedQ = false;
 public static void initOnce(java.io.InputStream stream) {
-if(!alreadyInitializedQ){AMA parser = new AMA(stream);
+if(!alreadyInitializedQ){AMAtoC parser = new AMAtoC(stream);
 alreadyInitializedQ = true;}
 }
 
@@ -67,7 +68,7 @@ alreadyInitializedQ = true;}
 
   public static void main(String args[]) throws ParseException {
 
-  AMA parser = new AMA(System.in);
+  AMAtoC parser = new AMAtoC(System.in);
   int status = 0;
   status = parser.runParser(args);
 
@@ -81,7 +82,7 @@ alreadyInitializedQ = true;}
 
   public static int notMain(String args[]) throws ParseException {
 
-  AMA parser = new AMA(System.in);
+  AMAtoC parser = new AMAtoC(System.in);
   int status = 0;
   status = parser.runParser(args);
 
@@ -103,14 +104,12 @@ alreadyInitializedQ = true;}
     String PathName;
     String FileName;
     int lastSlashIndex;
-
- //   if (args.length == 1) {
       if (args.length == 0) {
-//	System.err.println("AMA Java Parser Version 1.03: Reading from file " +
-//                           args[0] + "...");
+        	System.err.println(
+        	  "AMAtoC Java Parser Version 1.03: Reading from file stickywage"
+                            );
         try {
-//	  PathName = args[0];
-	  PathName = "mods/antulio.mod";
+	  PathName = "stickywage";
 	  lastSlashIndex = PathName.lastIndexOf('/');   // Real OS's
 	  if (lastSlashIndex < 0)
 	    lastSlashIndex = PathName.lastIndexOf('\\'); // Windows
@@ -118,28 +117,54 @@ alreadyInitializedQ = true;}
 	    FileName = PathName;
           else
 	    FileName = PathName.substring(lastSlashIndex+1);            
-	  m = new Model(FileName);
-//	  parser = new AMA(new java.io.FileInputStream(PathName));
+	  m = new ModelToC(FileName);
+//	  parser = new AMAtoC(new java.io.FileInputStream(PathName));
 	  ReInit(new java.io.FileInputStream(PathName));
         } catch (java.io.FileNotFoundException e) {
-          System.err.println("AMA Java Parser Version 1.03: File " + args[0] +
+          System.err.println("AMAtoC Java Parser Version 1.03: File " + args[0] +
+                             " not found.");
+          System.err.print(e.getMessage());
+          return(1);
+        }
+      } else
+              
+   if (args.length == 1) {
+ 
+	System.err.println("AMAtoC Java Parser Version 1.03: Reading from file " +
+                           args[0] + "...");
+        try {
+	  PathName = args[0];
+	  PathName = "stickywage";
+	  lastSlashIndex = PathName.lastIndexOf('/');   // Real OS's
+	  if (lastSlashIndex < 0)
+	    lastSlashIndex = PathName.lastIndexOf('\\'); // Windows
+	  if (lastSlashIndex < 0)
+	    FileName = PathName;
+          else
+	    FileName = PathName.substring(lastSlashIndex+1);            
+	  m = new ModelToC(FileName);
+//	  parser = new AMAtoC(new java.io.FileInputStream(PathName));
+	  ReInit(new java.io.FileInputStream(PathName));
+        } catch (java.io.FileNotFoundException e) {
+          System.err.println("AMAtoC Java Parser Version 1.03: File " + args[0] +
                              " not found.");
           System.err.print(e.getMessage());
           return(1);
         }
     } 
     else {
-      System.err.println("AMA Java Parser 1.03 usage is:");
-      System.err.println("         java AMA inputfile");
+      System.err.println("AMAtoC Java Parser 1.03 usage is:");
+      System.err.println("         java AMAtoC inputfile");
+      System.err.println("args length="+args.length);
       return(2);
     }
 
     try {
 //      parser.model();
       model();
-//      System.err.println("AMA Java Parser Version 1.03: No syntactic errors found.");
+//      System.err.println("AMAtoC Java Parser Version 1.03: No syntactic errors found.");
     } catch (ParseException e) {
-      System.err.println("AMA Java Parser Version 1.03: Syntactic errors found.");
+      System.err.println("AMAtoC Java Parser Version 1.03: Syntactic errors found.");
       System.err.print(e.getMessage());
       return(3);
     }
@@ -175,7 +200,7 @@ alreadyInitializedQ = true;}
     return(0);
   }
 }
-PARSER_END(AMA)
+PARSER_END(AMAtoC)
 
 SKIP :
 {
@@ -271,24 +296,24 @@ void variabledef() :
 	 Variable v = new Variable(name);
 	 m.AddVariable(v);
          index = m.FindVariableIndex(name);
-         m.Variables[index].setDelay(0);
-         m.Variables[index].setDataType(Data);
+         m.getVariables()[index].setDelay(0);
+         m.getVariables()[index].setDataType(Data);
         }
     [ <INTEGER>
         { // set delay
-           m.Variables[index].setDelay((int) Integer.parseInt(token.image));
+           m.getVariables()[index].setDelay((int) Integer.parseInt(token.image));
         } ]
     [ ( x = <DATA> | x = <DTRM> | x = <NOTD> )
         { // set vtype entry
         switch (x.kind) {
 	 case DATA:
- 	    m.Variables[index].setDataType(Data);
+ 	    m.getVariables()[index].setDataType(Data);
 	    break;
 	 case NOTD:
- 	    m.Variables[index].setDataType(Notd);
+ 	    m.getVariables()[index].setDataType(Notd);
 	    break;
 	 case DTRM:
-	    m.Variables[index].setDataType(Dtrm);
+	    m.getVariables()[index].setDataType(Dtrm);
 	    break;
 	    }
         } 
@@ -321,8 +346,8 @@ void eqnlist() :
  	    index = m.getNEq();
  	    n1 = ((Node) argStack.pop());
  	    n2 = ((Node) argStack.pop());
- 	    m.Equations[index-1].setLHS(n2);
- 	    m.Equations[index-1].setRHS(n1);
+ 	    m.getEquations()[index-1].setLHS(n2);
+ 	    m.getEquations()[index-1].setRHS(n1);
 	 }
 	)+
 }
@@ -339,7 +364,7 @@ void expression() :
 	        argStack.push(new SumNode(n2, n1));
 	    else {		
 		ConstantNode cn1 = new ConstantNode(-1.0);
-		ProductNode pn1 = new ProductNode(cn1, n1);
+		ProductNodeToC pn1 = new ProductNodeToC(cn1, n1);
 		argStack.push(new SumNode(n2, pn1));
 		}
 	}
@@ -354,12 +379,12 @@ void term() :
      	    Node n1 = ((Node) argStack.pop());
 	    Node n2 = ((Node) argStack.pop());
 	    if ( x.kind == MULTIPLY )
-	       argStack.push(new ProductNode(n2, n1));
+	       argStack.push(new ProductNodeToC(n2, n1));
 	    else
 		{
 		ConstantNode cn1 = new ConstantNode(-1.0);
-		PowerNode pown1 = new PowerNode(n1, cn1);
-		argStack.push(new ProductNode(n2, pown1));
+		PowerNodeToC pown1 = new PowerNodeToC(n1, cn1);
+		argStack.push(new ProductNodeToC(n2, pown1));
 		}
 	}
 	)*
@@ -372,7 +397,7 @@ void factor() :
 	{
 	    Node n1 = ((Node) argStack.pop());
 	    Node n2 = ((Node) argStack.pop());
-	    argStack.push(new PowerNode(n2, n1));
+	    argStack.push(new PowerNodeToC(n2, n1));
 	}
 	)*
 }
@@ -384,7 +409,7 @@ void unary() :
 	{
 	    Node n1 = ((Node) argStack.pop());
 	    ConstantNode cn1 = new ConstantNode(-1.0);
-	    argStack.push(new ProductNode(cn1, n1));
+	    argStack.push(new ProductNodeToC(cn1, n1));
 	}
   | element()
 }
@@ -420,8 +445,8 @@ void element() :
       <CLOSEPAREN>
 	{ /* variable with a lag */
 	ELag = No;
-	argStack.push(new VariableNode(VarName, -1 * Lag, ELag));
-	if (Lag > m.NLag)
+	argStack.push(new VariableNodeToC(VarName, -1 * Lag, ELag));
+	if (Lag > m.getNLag())
 	  m.setNLag(Lag);
 	}
   | <ELAG> { Lag = 1; } 
@@ -445,8 +470,8 @@ void element() :
       <CLOSEPAREN>
 	{ /* variable with an elag */
 	ELag = Yes;
-	argStack.push(new VariableNode(VarName, -1 * Lag, ELag));
-	if (Lag > m.NLag)
+	argStack.push(new VariableNodeToC(VarName, -1 * Lag, ELag));
+	if (Lag > m.getNLag())
 	  m.setNLag(Lag);
 	}
   | <LEAD> { Lead = 1; }
@@ -470,8 +495,8 @@ void element() :
       <CLOSEPAREN>
 	{ /* variable with a lead */
 	ELag = No;
-	argStack.push(new VariableNode(VarName, Lead, ELag));
-	if (Lead > m.NLead)
+	argStack.push(new VariableNodeToC(VarName, Lead, ELag));
+	if (Lead > m.getNLead())
 	  m.setNLead(Lead);
 	}
   | <IDENTIFIER>
@@ -484,7 +509,7 @@ void element() :
 		}
 	else /* variable with no lags or leads */
 	       {
-	       argStack.push(new VariableNode(token.image, 0, No));
+	       argStack.push(new VariableNodeToC(token.image, 0, No));
 	       }
 	}
 }
