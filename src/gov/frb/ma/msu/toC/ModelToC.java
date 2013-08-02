@@ -16,10 +16,228 @@ public class ModelToC extends Model {
 	    int i;
 	    PrintStream dataPS;
 	    PrintStream matrixPS;
+	    PrintStream templatePS;
+	    PrintStream parameterPS;
 	    String lcName = Name;
 	    lcName.toLowerCase();
 	    String dataFileName = lcName + "_AMA_data.c";
 	    String matrixFileName = lcName + "_AMA_matrices.c";
+	    String templateFileName = lcName + "_AMA_template.f90";
+
+	    String parameterFileName = lcName + "_AMA_SetAllParamsZero.f90";
+	    
+	    try {
+	    int numCols=(getNLag()+1+getNLead())*NEq;
+	    templatePS = new PrintStream(new FileOutputStream(templateFileName));
+	    templatePS.println("PROGRAM simpleSparseAMAExample !template file");
+	    templatePS.println();
+	    templatePS.println("IMPLICIT NONE");
+	    templatePS.println("INTEGER :: MAXELEMS, HROWS, HCOLS, LEADS, qrows, qcols");
+	    templatePS.println("INTEGER, DIMENSION(" + (numCols)*NEq + ") :: hmatj, hmati");
+	    templatePS.println("REAL(KIND = 8), DIMENSION(" + (numCols)*NEq + ") :: hmat");
+	    
+	    templatePS.println();
+	    templatePS.println("INTEGER :: maxNumberOfHElements, aux, rowsinQ, essential, retCODE,i, maxSize, testnp");
+	    
+	    templatePS.println();
+	    templatePS.println("REAL(KIND = 8), DIMENSION(" + (numCols)*NEq + ") :: g, h");
+	    templatePS.println("REAL(KIND = 8), DIMENSION(" + NCoeffs + ") :: params");
+	    templatePS.println();
+	    
+	    templatePS.println();
+	    templatePS.println("REAL(KIND = 8), DIMENSION(" + (numCols)*NEq + ") :: newHmat, qmat, bmat, rootr, rooti");
+	    templatePS.println("INTEGER(KIND = 8), DIMENSION(" + (numCols)*NEq + ") :: newHmatj, newHmati, qmatj, qmati, bmati, bmatj");
+	    templatePS.println("INTEGER, dimension(:), allocatable :: aPointerToVoid");
+	    templatePS.println("INTEGER :: DISCRETE_TIME, ierr");
+	    
+	    templatePS.println();
+	    templatePS.println("INTEGER :: rows, cols");
+	    templatePS.println();
+	    
+	    templatePS.println();
+	    templatePS.println("! Below, all of the parameters used in the model are declared.");
+	    templatePS.println("! However, the user should add to this list any intermediate parameters used in calculation.");
+	    templatePS.println();
+	    
+	    for (i = 0; i < NCoeffs; i++) {
+		    templatePS.println("REAL(KIND = 8) :: " + getCoefficients()[i]);
+		}
+	    
+	    templatePS.println();
+	    templatePS.println("!user must input coefficient values here");
+	    templatePS.println("!Since this file gets overwritten each time the parser is called, the user");
+	    templatePS.println("!may wish to assign these values in a separate routine.");
+	
+	    templatePS.println();
+	    templatePS.println("!zeroing out the input matrices");
+	    templatePS.println("DO i = 1, " + (numCols)*NEq);
+	    templatePS.println("hmatj(i) = 0");
+	    templatePS.println("hmat(i) = 0.0");
+	    templatePS.println("hmati(i) = 0");
+	    templatePS.println("newHmat(i) = 0.0");
+	    templatePS.println("END DO");
+	    templatePS.println();
+	   
+	    
+	    templatePS.println();
+	    templatePS.println("call parserwrapper(params, g, h, hmat, HROWS, HCOLS,LEADS)");
+	    
+	    templatePS.println();
+	    templatePS.println("DISCRETE_TIME = 1");
+	    templatePS.println("qrows = HROWS * LEADS");
+	    templatePS.println("qcols = HCOLS - HROWS");
+	    templatePS.println();
+	    
+	    templatePS.println("call conversionwrapper(HROWS, HCOLS, hmat, hmat, hmatj, hmati, ierr)");
+	    templatePS.println("MAXELEMS = " + numCols*NEq);
+	    templatePS.println("aux = 0");
+	    templatePS.println("rowsInQ = aux");
+	    templatePS.println("maxSize = MAXELEMS");
+	    templatePS.println();
+	    
+	    templatePS.println();
+	    templatePS.println("!You may wish to print out your sparse-format matrices.");
+	    templatePS.println("!Luckily, there's a routine to handle that, and a c-wrapper to call it.");
+	    templatePS.println("!Below is an example:");
+	    templatePS.println();
+	    templatePS.println("!call cprintsparsewrapper(HROWS,hmat,hmatj,hmati)");
+	    templatePS.println();
+	    
+	    
+	    templatePS.println();
+	    templatePS.println("call sparseamawrapper(maxSize, DISCRETE_TIME, HROWS, HCOLS, LEADS, hmat, hmatj, hmati, newHmat, newHmatj, newHmati, aux, rowsInQ, qmat, qmatj, qmati, essential, rootr, rooti, retCode, aPointerToVoid)");
+	    templatePS.println();
+	    
+	    templatePS.println();
+	    templatePS.println("call obtainsparsewrapper(maxSize, qrows, qcols, qmat, qmatj, qmati, bmat, bmatj, bmati)");
+	    templatePS.println();
+	    
+	    templatePS.println();
+	    templatePS.println("call csrdnswrapper(LEADS*HROWS,HCOLS,bmat,bmatj,bmati,bmat,ierr)");
+	    templatePS.println();
+	    
+	    templatePS.println();
+	    templatePS.println("STOP");
+	    templatePS.println("END PROGRAM simpleSparseAMAExample");
+	    templatePS.println();
+	    
+	    
+	    templatePS.close();
+	    } catch (Exception e) {
+		System.err.println("ERROR: " + e.getMessage());
+	    }
+	    
+	    try {
+	    int numCols=(getNLag()+1+getNLead())*NEq;
+	    parameterPS = new PrintStream(new FileOutputStream(parameterFileName));
+	    parameterPS.println("SUBROUTINE simpleSparseAMAExample !parameter file");
+	    parameterPS.println();
+	    parameterPS.println("IMPLICIT NONE");
+	    parameterPS.println("INTEGER :: MAXELEMS, HROWS, HCOLS, LEADS, qrows, qcols");
+	    parameterPS.println("INTEGER, DIMENSION(" + (numCols)*NEq + ") :: hmatj, hmati");
+	    parameterPS.println("REAL(KIND = 8), DIMENSION(" + (numCols)*NEq + ") :: hmat");
+	    
+	    parameterPS.println();
+	    parameterPS.println("INTEGER :: maxNumberOfHElements, aux, rowsinQ, essential, retCODE,i, maxSize, testnp");
+	    
+	    parameterPS.println();
+	    parameterPS.println("REAL(KIND = 8), DIMENSION(" + (numCols)*NEq + ") :: g, h");
+	    parameterPS.println("REAL(KIND = 8), DIMENSION(" + NCoeffs + ") :: params");
+	    parameterPS.println();
+	    
+	    parameterPS.println();
+	    parameterPS.println("REAL(KIND = 8), DIMENSION(" + (numCols)*NEq + ") :: newHmat, qmat, bmat, rootr, rooti");
+	    parameterPS.println("INTEGER(KIND = 8), DIMENSION(" + (numCols)*NEq + ") :: newHmatj, newHmati, qmatj, qmati, bmati, bmatj");
+	    parameterPS.println("INTEGER, dimension(:), allocatable :: aPointerToVoid");
+	    parameterPS.println("INTEGER :: DISCRETE_TIME, ierr");
+	    
+	    parameterPS.println();
+	    parameterPS.println("INTEGER :: rows, cols");
+	    parameterPS.println();
+	    
+	    parameterPS.println();
+	    parameterPS.println("! Below, all of the parameters used in the model are declared.");
+	    parameterPS.println("! However, the user should add to this list any intermediate parameters used in calculation.");
+	    parameterPS.println();
+	    
+	    for (i = 0; i < NCoeffs; i++) {
+		    parameterPS.println("REAL(KIND = 8) :: " + getCoefficients()[i]);
+		}
+	    
+	    parameterPS.println();
+	    parameterPS.println("!user must input coefficient values here");
+	    parameterPS.println("!Since this file gets overwritten each time the parser is called, the user");
+	    parameterPS.println("!may wish to assign these values in a separate routine.");
+	    for (i = 0; i < NCoeffs; i++) {
+	        parameterPS.println(getCoefficients()[i] + "=0 ");
+	    }
+	    parameterPS.println();
+	    
+	    parameterPS.println();
+	    for (i = 0; i < NCoeffs; i++) {
+	    parameterPS.println("params(" + i + ") = " + getCoefficients()[i]);
+	    }
+	    parameterPS.println();
+	    
+	    parameterPS.println();
+	    parameterPS.println("!zeroing out the input matrices");
+	    parameterPS.println("DO i = 1, " + (numCols)*NEq);
+	    parameterPS.println("hmatj(i) = 0");
+	    parameterPS.println("hmat(i) = 0.0");
+	    parameterPS.println("hmati(i) = 0");
+	    parameterPS.println("newHmat(i) = 0.0");
+	    parameterPS.println("END DO");
+	    parameterPS.println();
+	   
+	    
+	    parameterPS.println();
+	    parameterPS.println("call parserwrapper(params, g, h, hmat, HROWS, HCOLS,LEADS)");
+	    
+	    parameterPS.println();
+	    parameterPS.println("DISCRETE_TIME = 1");
+	    parameterPS.println("qrows = HROWS * LEADS");
+	    parameterPS.println("qcols = HCOLS - HROWS");
+	    parameterPS.println();
+	    
+	    parameterPS.println("call conversionwrapper(HROWS, HCOLS, hmat, hmat, hmatj, hmati, ierr)");
+	    parameterPS.println("MAXELEMS = " + numCols*NEq);
+	    parameterPS.println("aux = 0");
+	    parameterPS.println("rowsInQ = aux");
+	    parameterPS.println("maxSize = MAXELEMS");
+	    parameterPS.println();
+	    
+	    parameterPS.println();
+	    parameterPS.println("!You may wish to print out your sparse-format matrices.");
+	    parameterPS.println("!Luckily, there's a routine to handle that, and a c-wrapper to call it.");
+	    parameterPS.println("!Below is an example:");
+	    parameterPS.println();
+	    parameterPS.println("!call cprintsparsewrapper(HROWS,hmat,hmatj,hmati)");
+	    parameterPS.println();
+	    
+	    
+	    parameterPS.println();
+	    parameterPS.println("call sparseamawrapper(maxSize, DISCRETE_TIME, HROWS, HCOLS, LEADS, hmat, hmatj, hmati, newHmat, newHmatj, newHmati, aux, rowsInQ, qmat, qmatj, qmati, essential, rootr, rooti, retCode, aPointerToVoid)");
+	    parameterPS.println();
+	    
+	    parameterPS.println();
+	    parameterPS.println("call obtainsparsewrapper(maxSize, qrows, qcols, qmat, qmatj, qmati, bmat, bmatj, bmati)");
+	    parameterPS.println();
+	    
+	    parameterPS.println();
+	    parameterPS.println("call csrdnswrapper(LEADS*HROWS,HCOLS,bmat,bmatj,bmati,bmat,ierr)");
+	    parameterPS.println();
+	    
+	    parameterPS.println();
+	    parameterPS.println("STOP");
+	    parameterPS.println("END SUBROUTINE simpleSparseAMAExample");
+	    parameterPS.println();
+	    
+	    
+	    parameterPS.close();
+	    } catch (Exception e) {
+		System.err.println("ERROR: " + e.getMessage());
+	    }
+	    
 	    
 	    try {
 		dataPS = new PrintStream(new FileOutputStream(dataFileName));
@@ -115,7 +333,9 @@ public class ModelToC extends Model {
 	    try {
 	      matrixPS = new PrintStream(new FileOutputStream(matrixFileName));
 	  	int numCols=(getNLag()+1+getNLead())*NEq;
-        
+	  	
+	    
+	  	
 	      matrixPS.println("void getnumrows_(int *rows)");
 	      matrixPS.println("{");
 	      matrixPS.println("*rows = " + NEq +";");
@@ -127,7 +347,10 @@ public class ModelToC extends Model {
 	      matrixPS.println("*cols =" + numCols + ";");
 	      matrixPS.println("}");
 	      	      
-      
+	      matrixPS.println("void getnumgcols_(int *cols)");
+	      matrixPS.println("{");
+	      matrixPS.println("*cols =" + NEq*(getNLag()+1) + ";");
+	      matrixPS.println("}");
 	     
 	      matrixPS.println("int " + lcName + "_AMA_matrices(double *paramvalues, double *cofg, double *cofh) {");
 	      matrixPS.println("//     This script will compute the G and H matrices.");
@@ -152,11 +375,11 @@ public class ModelToC extends Model {
 	      matrixPS.println("int i;");
 
 	      matrixPS.println("for(i = 0;i <" + NEq + "*" + (getNLag()+1)*NEq + " ; i++ ){");
-	      matrixPS.println("g[i] = 0;");
+	      matrixPS.println("cofg[i] = 0;");
 	      matrixPS.println("}");
 	      
 	      matrixPS.println("for(i = 0;i <" + NEq + "*" + (getNLag()+1+getNLead())*NEq  + " ; i++ ){");
-	      matrixPS.println("h[i] = 0;");
+	      matrixPS.println("cofh[i] = 0;");
 	      matrixPS.println("}");
 	      
 	      for (i = 0; i < NEq; i++) {
@@ -171,12 +394,47 @@ public class ModelToC extends Model {
 	      }
 	
 	      matrixPS.println();
-	      matrixPS.println("  cofg = g;");
-	      matrixPS.println("  cofh = h;");
+	      matrixPS.println("//  cofg = g;");
+	      matrixPS.println("//  cofh = h;");
 	      
 	      matrixPS.println();
 		  matrixPS.println("return(0);");
 	      matrixPS.println("}");
+	      
+	      matrixPS.println("int parserwrapper_(double *params,double *g, double *h,double*hmat,int *HROWS,int *HCOLS, int *LEADS)");
+		    matrixPS.println("{");
+		    
+		    matrixPS.println(lcName + "_AMA_matrices(params,g,hmat);");
+		    matrixPS.println("int i;");
+		    matrixPS.println("int k;");
+		    
+		    matrixPS.println("int rows;");
+		    matrixPS.println("int cols;");
+		    matrixPS.println("int gcols;");
+		    
+		    matrixPS.println("rows = " + NEq +";");
+		    matrixPS.println("cols =" + numCols + ";");
+		      matrixPS.println("gcols =" + NEq*(getNLag()+1) + ";");
+		      matrixPS.println("*LEADS = " + getNLead() + ";");
+		      matrixPS.println("*HROWS = rows;");
+		      matrixPS.println("*HCOLS = cols;");
+		      
+		      
+		    matrixPS.println("//getnumrows_(&rows);");
+		    matrixPS.println("//getnumcols_(&cols);");
+		    matrixPS.println("//getnumgcols_(&gcols);");
+		    
+		    matrixPS.println("for(i = 0;i < gcols;i++){");
+		    matrixPS.println("for (k = 0;k < rows;k ++){");
+		    matrixPS.println("hmat[rows*i+k] = hmat[rows*i+k] + g[rows*i + k];");
+		    matrixPS.println(" }");
+		      
+		    matrixPS.println(" }");
+
+		    
+		    matrixPS.println("return(0);");
+		    
+		    matrixPS.println("}");
 	      
 	      matrixPS.close();
 	    } catch (Exception e) {
@@ -185,3 +443,4 @@ public class ModelToC extends Model {
 	  }
 
 }
+
