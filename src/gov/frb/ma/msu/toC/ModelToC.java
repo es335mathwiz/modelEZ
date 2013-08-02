@@ -67,7 +67,8 @@ public class ModelToC extends Model {
 	    templatePS.println("!user must input coefficient values here");
 	    templatePS.println("!Since this file gets overwritten each time the parser is called, the user");
 	    templatePS.println("!may wish to assign these values in a separate routine.");
-	
+	    templatePS.println("!edit and rename the default subroutine that sets all the parameters zero.");
+	    templatePS.println("call "+lcName + "_AMA_SetAllParamsZero(params)");
 	    templatePS.println();
 	    templatePS.println("!zeroing out the input matrices");
 	    templatePS.println("DO i = 1, " + (numCols)*NEq);
@@ -130,7 +131,7 @@ public class ModelToC extends Model {
 	    try {
 	    int numCols=(getNLag()+1+getNLead())*NEq;
 	    parameterPS = new PrintStream(new FileOutputStream(parameterFileName));
-	    parameterPS.println("SUBROUTINE simpleSparseAMAExample !parameter file");
+	    parameterPS.println("SUBROUTINE "+lcName + "_AMA_SetAllParamsZero(params) !parameter file");
 	    parameterPS.println();
 	    parameterPS.println("IMPLICIT NONE");
 	    parameterPS.println("INTEGER :: MAXELEMS, HROWS, HCOLS, LEADS, qrows, qcols");
@@ -180,56 +181,10 @@ public class ModelToC extends Model {
 	    parameterPS.println();
 	    
 	    parameterPS.println();
-	    parameterPS.println("!zeroing out the input matrices");
-	    parameterPS.println("DO i = 1, " + (numCols)*NEq);
-	    parameterPS.println("hmatj(i) = 0");
-	    parameterPS.println("hmat(i) = 0.0");
-	    parameterPS.println("hmati(i) = 0");
-	    parameterPS.println("newHmat(i) = 0.0");
-	    parameterPS.println("END DO");
-	    parameterPS.println();
-	   
+
 	    
 	    parameterPS.println();
-	    parameterPS.println("call parserwrapper(params, g, h, hmat, HROWS, HCOLS,LEADS)");
-	    
-	    parameterPS.println();
-	    parameterPS.println("DISCRETE_TIME = 1");
-	    parameterPS.println("qrows = HROWS * LEADS");
-	    parameterPS.println("qcols = HCOLS - HROWS");
-	    parameterPS.println();
-	    
-	    parameterPS.println("call conversionwrapper(HROWS, HCOLS, hmat, hmat, hmatj, hmati, ierr)");
-	    parameterPS.println("MAXELEMS = " + numCols*NEq);
-	    parameterPS.println("aux = 0");
-	    parameterPS.println("rowsInQ = aux");
-	    parameterPS.println("maxSize = MAXELEMS");
-	    parameterPS.println();
-	    
-	    parameterPS.println();
-	    parameterPS.println("!You may wish to print out your sparse-format matrices.");
-	    parameterPS.println("!Luckily, there's a routine to handle that, and a c-wrapper to call it.");
-	    parameterPS.println("!Below is an example:");
-	    parameterPS.println();
-	    parameterPS.println("!call cprintsparsewrapper(HROWS,hmat,hmatj,hmati)");
-	    parameterPS.println();
-	    
-	    
-	    parameterPS.println();
-	    parameterPS.println("call sparseamawrapper(maxSize, DISCRETE_TIME, HROWS, HCOLS, LEADS, hmat, hmatj, hmati, newHmat, newHmatj, newHmati, aux, rowsInQ, qmat, qmatj, qmati, essential, rootr, rooti, retCode, aPointerToVoid)");
-	    parameterPS.println();
-	    
-	    parameterPS.println();
-	    parameterPS.println("call obtainsparsewrapper(maxSize, qrows, qcols, qmat, qmatj, qmati, bmat, bmatj, bmati)");
-	    parameterPS.println();
-	    
-	    parameterPS.println();
-	    parameterPS.println("call csrdnswrapper(LEADS*HROWS,HCOLS,bmat,bmatj,bmati,bmat,ierr)");
-	    parameterPS.println();
-	    
-	    parameterPS.println();
-	    parameterPS.println("STOP");
-	    parameterPS.println("END SUBROUTINE simpleSparseAMAExample");
+	    parameterPS.println("END SUBROUTINE " +lcName + "_AMA_SetAllParamsZero ");
 	    parameterPS.println();
 	    
 	    
@@ -352,7 +307,7 @@ public class ModelToC extends Model {
 	      matrixPS.println("*cols =" + NEq*(getNLag()+1) + ";");
 	      matrixPS.println("}");
 	     
-	      matrixPS.println("int " + lcName + "_AMA_matrices(double *paramvalues, double *cofg, double *cofh) {");
+	      matrixPS.println("int " + lcName + "_AMA_matrices(double *paramvalues, double *g, double *h) {");
 	      matrixPS.println("//     This script will compute the G and H matrices.");
 	      matrixPS.println("#include <math.h>");
 	      	      matrixPS.println();
@@ -368,20 +323,12 @@ public class ModelToC extends Model {
 	      	matrixPS.println("");
 	        matrixPS.println();
 	        
-	      matrixPS.println("double g[" + NEq + "*"+ (getNLag()+1)*NEq +"];");
-	      matrixPS.println("double  h[" + NEq + "*"+ (getNLag()+1+getNLead())*NEq +"] ;");
+//	      matrixPS.println("double g[" + NEq + "*"+ (getNLag()+1)*NEq +"];");
+//	      matrixPS.println("double  h[" + NEq + "*"+ (getNLag()+1+getNLead())*NEq +"] ;");
 	      matrixPS.println();
 	      
 	      matrixPS.println("int i;");
-
-	      matrixPS.println("for(i = 0;i <" + NEq + "*" + (getNLag()+1)*NEq + " ; i++ ){");
-	      matrixPS.println("cofg[i] = 0;");
-	      matrixPS.println("}");
-	      
-	      matrixPS.println("for(i = 0;i <" + NEq + "*" + (getNLag()+1+getNLead())*NEq  + " ; i++ ){");
-	      matrixPS.println("cofh[i] = 0;");
-	      matrixPS.println("}");
-	      
+    
 	      for (i = 0; i < NEq; i++) {
 		getEquations()[i].getLHS().PrintGMatrixEntries(this, i, AMAtoC.Left_Side,
 						     matrixPS);
@@ -394,8 +341,6 @@ public class ModelToC extends Model {
 	      }
 	
 	      matrixPS.println();
-	      matrixPS.println("//  cofg = g;");
-	      matrixPS.println("//  cofh = h;");
 	      
 	      matrixPS.println();
 		  matrixPS.println("return(0);");
