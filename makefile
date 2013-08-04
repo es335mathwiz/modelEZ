@@ -48,4 +48,4 @@ $(MODNAME)_AMA_template.o: $(MODNAME)_AMA_template.f90
 	$(FC)  -c -g $(MODNAME)_AMA_template.f90 -fPIC
 
 $(MODNAME)_AMA_matrices.o : $(MODNAME)_AMA_matrices.c
-	$(CC) -c -g $(MODNAME)_AMA_matrices.c -I$(templateHOME)/src/main/include -shared -fPIC -o $(MODNAME)_AMA_matrices.o
+	$(CC)  -c -g $(MODNAME)_AMA_matrices.c -I$(templateHOME)/src/main/include -shared -fPIC -o $(MODNAME)_AMA_matrices.o
