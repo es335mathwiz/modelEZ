@@ -106,7 +106,7 @@ public class ModelToC extends Model {
 	    
 	    
 	    templatePS.println();
-	    templatePS.println("call sparseamawrapper(maxSize, DISCRETE_TIME, HROWS, HCOLS, LEADS, hmat, hmatj, hmati, newHmat, newHmatj, newHmati, aux, rowsInQ, qmat, qmatj, qmati, essential, rootr, rooti, retCode, aPointerToVoid)");
+	    templatePS.println("call sparseamawrapper(maxSize, DISCRETE_TIME, HROWS, HCOLS, LEADS, hmat, hmatj, hmati, newHmat, newHmatj, newHmati,&\n aux, rowsInQ, qmat, qmatj, qmati, essential, rootr, rooti, retCode, aPointerToVoid)");
 	    templatePS.println();
 	    
 	    templatePS.println();
@@ -176,7 +176,7 @@ public class ModelToC extends Model {
 	    
 	    parameterPS.println();
 	    for (i = 0; i < NCoeffs; i++) {
-	    parameterPS.println("params(" + i + ") = " + getCoefficients()[i]);
+	    parameterPS.println("params(" + (i+1) + ") = " + getCoefficients()[i]);
 	    }
 	    parameterPS.println();
 	    
@@ -289,7 +289,8 @@ public class ModelToC extends Model {
 	      matrixPS = new PrintStream(new FileOutputStream(matrixFileName));
 	  	int numCols=(getNLag()+1+getNLead())*NEq;
 	  	
-	    
+	      matrixPS.println("#include <math.h>");
+   	        
 	  	
 	      matrixPS.println("void getnumrows_(int *rows)");
 	      matrixPS.println("{");
@@ -309,8 +310,7 @@ public class ModelToC extends Model {
 	     
 	      matrixPS.println("int " + lcName + "_AMA_matrices(double *paramvalues, double *g, double *h) {");
 	      matrixPS.println("//     This script will compute the G and H matrices.");
-	      matrixPS.println("#include <math.h>");
-	      	      matrixPS.println();
+	      matrixPS.println();
 	      
 	     
 
