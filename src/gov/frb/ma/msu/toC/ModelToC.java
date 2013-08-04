@@ -106,7 +106,7 @@ public class ModelToC extends Model {
 	    
 	    
 	    templatePS.println();
-	    templatePS.println("call sparseamawrapper(maxSize, DISCRETE_TIME, HROWS, HCOLS, LEADS, hmat, hmatj, hmati, newHmat, newHmatj, newHmati, aux, rowsInQ, qmat, qmatj, qmati, essential, rootr, rooti, retCode, aPointerToVoid)");
+	    templatePS.println("call sparseamawrapper(maxSize, DISCRETE_TIME, HROWS, HCOLS, LEADS, hmat, hmatj, hmati,&\n newHmat, newHmatj, newHmati, aux, rowsInQ, qmat, qmatj, qmati, essential, rootr, rooti, retCode, aPointerToVoid)");
 	    templatePS.println();
 	    
 	    templatePS.println();
@@ -176,7 +176,7 @@ public class ModelToC extends Model {
 	    
 	    parameterPS.println();
 	    for (i = 0; i < NCoeffs; i++) {
-	    parameterPS.println("params(" + i + ") = " + getCoefficients()[i]);
+	    parameterPS.println("params(" + (i+1) + ") = " + getCoefficients()[i]);
 	    }
 	    parameterPS.println();
 	    
