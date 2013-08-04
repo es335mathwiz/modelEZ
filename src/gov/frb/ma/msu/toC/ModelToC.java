@@ -169,6 +169,11 @@ public class ModelToC extends Model {
 	    parameterPS.println("!user must input coefficient values here");
 	    parameterPS.println("!Since this file gets overwritten each time the parser is called, the user");
 	    parameterPS.println("!may wish to assign these values in a separate routine.");
+	
+	    parameterPS.println("print *, \"SETTING PARAMS TO ZERO\"");
+	    parameterPS.println("print *, \"RENAME AND EDIT "+parameterFileName+"\"");
+
+	    parameterPS.println("print *, \"AND EDIT "+lcName+"_AMA_SetAllParamsZero function call in "+templateFileName+"\"");
 	    for (i = 0; i < NCoeffs; i++) {
 	        parameterPS.println(getCoefficients()[i] + "=0 ");
 	    }
