@@ -10,7 +10,7 @@ FOBJS = $(patsubst %.f,%.o,$(wildcard $(templateHOME)/src/main/fortran/*.f))
 
 POBJS =   $(templateHOME)/getmat.o  $(templateHOME)/cprintsparsewrapper.o $(templateHOME)/conversionwrapper.o  $(templateHOME)/sparseamawrapper.o  $(templateHOME)/obtainsparsewrapper.o  $(templateHOME)/sparskit2.o  $(templateHOME)/sparseAMA.o  $(templateHOME)/getmatwrapper.o  $(templateHOME)/csrdnswrapper.o $(LOBJS)
 #OBJS = $(FOBJS) $(POBJS)
-OBJS = $(wildcard $(templateHOME)/*.o)
+OBJS =  $(MODNAME)_AMA_template.o $(PARAMFILENAME).o $(MODNAME)_AMA_matrices.o $(wildcard $(templateHOME)/*.o)
 
 
 #Flags, Compilers, Linkers
@@ -25,7 +25,7 @@ LIBMATIO =
 
 
 #chrismodel: $(LOBJS)
-#	$(LINK) -g $(OBJS)  $(LIBMATIO) -lm -assume nounderscore -L/opt/atlas/lib/ -lcblas -lf77blas -latlas -llapack -o chrismodel 
+#	$(LINK) -g $(OBJS) $(PARAMFILENAME) $(LIBMATIO) -lm -assume nounderscore -L/opt/atlas/lib/ -lcblas -lf77blas -latlas -llapack -o chrismodel 
 
 chrismodel: $(LOBJS)
 	echo FSRCS
