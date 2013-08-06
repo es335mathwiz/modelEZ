@@ -6,7 +6,7 @@ command -v $CC >/dev/null 2>&1 || { echo >&2 "Could not find c compiler. Abortin
 command -v $javaCmd >/dev/null 2>&1 || { echo >&2 "Could not find java command. Aborting."; exit 1; }
 if [ $# -eq 0  ]
 then
-echo "Usage: `basename $0` modName"
+echo "Usage: `basename $0` modName  <paramFileName>"
 exit
 fi
 if [ $# -gt 2  ]
@@ -19,6 +19,7 @@ then
 echo "found model file"
 else
 echo  "did not find model file"
+echo $1
 exit 1
 fi
 if [ -e $parserJarLoc ]
@@ -26,6 +27,7 @@ then
 echo "found jar file"
 else
 echo  "did not find jar file"
+echo $parserJarLoc
 exit 1
 fi
 
@@ -49,6 +51,7 @@ then
 echo "found param file"
 else
 echo  "did not find param file"
+echo  $2.f90
 exit 1
 fi
 	make MODNAME=$1 PARAMFILENAME=$2
