@@ -34,7 +34,7 @@ public class ModelToC extends Model {
 	    templatePS.println("IMPLICIT NONE");
 	    templatePS.println("INTEGER :: MAXELEMS, HROWS, HCOLS, LEADS, qrows, qcols");
 	    templatePS.println("INTEGER, DIMENSION(" + (numCols)*NEq + ") :: hmatj, hmati");
-	    templatePS.println("REAL(KIND = 8), DIMENSION(" + (numCols)*NEq + ") :: hmat");
+	    templatePS.println("REAL(KIND = 8), DIMENSION(" + (numCols)*NEq + ") :: hmat, denseHmat, denseBmat");
 	    
 	    templatePS.println();
 	    templatePS.println("INTEGER :: maxNumberOfHElements, aux, rowsinQ, essential, retCODE,i, maxSize, testnp");
@@ -76,12 +76,14 @@ public class ModelToC extends Model {
 	    templatePS.println("hmat(i) = 0.0");
 	    templatePS.println("hmati(i) = 0");
 	    templatePS.println("newHmat(i) = 0.0");
+	    templatePS.println("denseHmat(i) = 0.0");
+	    templatePS.println("denseBmat(i) = 0.0");
 	    templatePS.println("END DO");
 	    templatePS.println();
 	   
 	    
 	    templatePS.println();
-	    templatePS.println("call parserwrapper(params, g, h, hmat, HROWS, HCOLS,LEADS)");
+	    templatePS.println("call parserwrapper(params, g, h, denseHmat, HROWS, HCOLS,LEADS)");
 	    
 	    templatePS.println();
 	    templatePS.println("DISCRETE_TIME = 1");
@@ -89,7 +91,7 @@ public class ModelToC extends Model {
 	    templatePS.println("qcols = HCOLS - HROWS");
 	    templatePS.println();
 	    
-	    templatePS.println("call conversionwrapper(HROWS, HCOLS, hmat, hmat, hmatj, hmati, ierr)");
+	    templatePS.println("call conversionwrapper(HROWS, HCOLS, denseHmat, hmat, hmatj, hmati, ierr)");
 	    templatePS.println("MAXELEMS = " + numCols*NEq);
 	    templatePS.println("aux = 0");
 	    templatePS.println("rowsInQ = aux");
@@ -116,7 +118,7 @@ public class ModelToC extends Model {
 	    templatePS.println();
 	    
 	    templatePS.println();
-	    templatePS.println("call csrdnswrapper(LEADS*HROWS,HCOLS,bmat,bmatj,bmati,bmat,ierr)");
+	    templatePS.println("call csrdnswrapper(LEADS*HROWS,HCOLS,bmat,bmatj,bmati,denseBmat,ierr)");
 	    templatePS.println();
 	    
 	    templatePS.println();
