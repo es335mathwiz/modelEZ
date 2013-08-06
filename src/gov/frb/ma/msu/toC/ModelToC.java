@@ -68,7 +68,7 @@ public class ModelToC extends Model {
 	    templatePS.println("!Since this file gets overwritten each time the parser is called, the user");
 	    templatePS.println("!may wish to assign these values in a separate routine.");
 	    templatePS.println("!edit and rename the default subroutine that sets all the parameters zero.");
-	    templatePS.println("call "+lcName + "_AMA_SetAllParamsZero(params)");
+	    templatePS.println("call "+lcName + "_AMA_SetAllParams(params)");
 	    templatePS.println();
 	    templatePS.println("!zeroing out the input matrices");
 	    templatePS.println("DO i = 1, " + (numCols)*NEq);
@@ -133,7 +133,7 @@ public class ModelToC extends Model {
 	    try {
 	    int numCols=(getNLag()+1+getNLead())*NEq;
 	    parameterPS = new PrintStream(new FileOutputStream(parameterFileName));
-	    parameterPS.println("SUBROUTINE "+lcName + "_AMA_SetAllParamsZero(params) !parameter file");
+	    parameterPS.println("SUBROUTINE "+lcName + "_AMA_SetAllParams(params) !parameter file");
 	    parameterPS.println();
 	    parameterPS.println("IMPLICIT NONE");
 	    parameterPS.println("INTEGER :: MAXELEMS, HROWS, HCOLS, LEADS, qrows, qcols");
@@ -174,8 +174,8 @@ public class ModelToC extends Model {
 	
 	    parameterPS.println("print *, \"SETTING PARAMS TO ZERO\"");
 	    parameterPS.println("print *, \"RENAME AND EDIT "+parameterFileName+"\"");
-
-	    parameterPS.println("print *, \"AND EDIT "+lcName+"_AMA_SetAllParamsZero function call in "+templateFileName+"\"");
+	    parameterPS.println("!change the following print message to reflect your new file name");
+			    parameterPS.println("print *, \"USING "+lcName+"_AMA_SetAllParamsZero.f90 in parameter setting function call in "+templateFileName+"\"");
 	    for (i = 0; i < NCoeffs; i++) {
 	        parameterPS.println(getCoefficients()[i] + "=0 ");
 	    }
@@ -191,7 +191,7 @@ public class ModelToC extends Model {
 
 	    
 	    parameterPS.println();
-	    parameterPS.println("END SUBROUTINE " +lcName + "_AMA_SetAllParamsZero ");
+	    parameterPS.println("END SUBROUTINE " +lcName + "_AMA_SetAllParams ");
 	    parameterPS.println();
 	    
 	    
