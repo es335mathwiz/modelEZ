@@ -1,5 +1,6 @@
 #File Locations
-SPAMADIR=../sparseAMAPostMerge
+LAPACKLIBS=  -L/opt/atlas/lib/ -lcblas -lf77blas -latlas -llapack
+SPAMADIR=../sparseAMAFiles
 
 PARAMFILENAME=$(MODNAME)_AMA_SetAllParamsZero
 LOBJS = $(MODNAME)_AMA_template.o $(MODNAME)_AMA_matrices.o $(PARAMFILENAME).o
@@ -19,7 +20,7 @@ CC = gcc
 CFLAGS = -c -g -I$(SPAMADIR)/src/main/include
 
 RUN$(MODNAME): $(LOBJS) $(FOBJS) $(COBJS)
-	$(LINK) -g $(LOBJS) $(FOBJS) $(COBJS)  -lm  -L/opt/atlas/lib/ -lcblas -lf77blas -latlas -llapack -o RUN$(MODNAME)
+	$(LINK) -g $(LOBJS) $(FOBJS) $(COBJS)  -lm $(LAPACKLIBS) -o RUN$(MODNAME)
 
 $(PARAMFILENAME).o: $(PARAMFILENAME).f90
 	$(FC)  $(FFLAGS) $(PARAMFILENAME).f90 -fPIC
@@ -32,6 +33,22 @@ $(MODNAME)_AMA_matrices.o : $(MODNAME)_AMA_matrices.c
 
 
 clean:
+	rm -f $(LOBJS) 
+	rm -f *.f90
+	rm -f *.c
+	rm -f *.o
+	rm -f RUN*
+	cp ../reasonableParams.f90 .
+
+distclean:
 	rm -f $(LOBJS) $(FOBJS) $(COBJS)
+	rm -f *.f90
+	rm -f *.c
+	rm -f *.o
+	rm -f RUN*
+	cp ../reasonableParams.f90 .
 
-
+echo:
+	echo $(LOBJS)
+	echo $(FOBJS)
+	echo $(COBJS)
