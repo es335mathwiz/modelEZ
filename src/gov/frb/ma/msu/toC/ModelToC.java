@@ -339,13 +339,13 @@ public class ModelToC extends Model {
 	      matrixPS.println("int i;");
     
 	      for (i = 0; i < NEq; i++) {
-		getEquations()[i].getLHS().PrintGMatrixEntries(this, i, AMAtoC.Left_Side,
+		getEquations()[i].getLHS().PrintGMatrixEntries(this, i, Model.Left_Side,
 						     matrixPS);
-		getEquations()[i].getRHS().PrintGMatrixEntries(this, i, AMAtoC.Right_Side,
+		getEquations()[i].getRHS().PrintGMatrixEntries(this, i, Model.Right_Side,
 						     matrixPS);
-		getEquations()[i].getLHS().PrintHMatrixEntries(this, i, AMAtoC.Left_Side,
+		getEquations()[i].getLHS().PrintHMatrixEntries(this, i, Model.Left_Side,
 						     matrixPS);
-		getEquations()[i].getRHS().PrintHMatrixEntries(this, i, AMAtoC.Right_Side,
+		getEquations()[i].getRHS().PrintHMatrixEntries(this, i, Model.Right_Side,
 						     matrixPS);
 	      }
 	

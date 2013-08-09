@@ -46,7 +46,7 @@ public class VariableNode extends Node
 	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
       pout.print("  g(" + indexPlus1 + ") = g(" + indexPlus1 + ")");
-      if (side == AMAtoMatlab.Left_Side)
+      if (side == Model.Left_Side)
 	pout.print(" + 1;\n");
       else
 	pout.print(" - 1;\n");
@@ -62,7 +62,7 @@ public class VariableNode extends Node
 	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
       pout.print("  h(" + indexPlus1 + ") = h(" + indexPlus1 + ")");
-      if (side == AMAtoMatlab.Left_Side)
+      if (side == Model.Left_Side)
 	pout.print(" + 1;\n");
       else
 	pout.print(" - 1;\n");

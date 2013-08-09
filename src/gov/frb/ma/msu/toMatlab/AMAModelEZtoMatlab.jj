@@ -32,10 +32,7 @@ public class AMAtoMatlab {
     public static final int No = 0;
     public static final int Yes = 1;
 
-    public static final int Max_Array_Size = 10000;
 
-    public static final int Left_Side = 100;
-    public static final int Right_Side = 101;
 
     public static final int G_Matrix = 0;
     public static final int H_Matrix = 1;

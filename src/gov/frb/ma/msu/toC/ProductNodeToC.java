@@ -119,7 +119,7 @@ public class ProductNodeToC extends Node
 	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
       pout.print("  g[" + indexPlus1 + "] = g[" + indexPlus1 + "]");
-      if (side == AMAtoC.Right_Side)
+      if (side == Model.Right_Side)
 	pout.print(" - ");
       else
 	pout.print(" + ");
@@ -149,7 +149,7 @@ public class ProductNodeToC extends Node
 	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
       pout.print("  h[" + indexPlus1 + "] = h[" + indexPlus1 + "]");
-      if (side == AMAtoC.Right_Side)
+      if (side == Model.Right_Side)
 	pout.print(" - ");
       else
 	pout.print(" + ");

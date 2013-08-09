@@ -1,19 +1,24 @@
 package gov.frb.ma.msu.modelEZCommon;
 
-import gov.frb.ma.msu.toMatlab.AMAtoMatlab;
+//import gov.frb.ma.msu.toMatlab.AMAtoMatlab;
 
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 
 public class Model {
 
+    public static final int Max_Array_Size = 10000;
+
+    public static final int Left_Side = 100;
+    public static final int Right_Side = 101;
+
 	protected String Name;
 	protected int NEq;
 	private int NLag;
 	private int NLead;
-	private Equation[] Equations = new Equation[AMAtoMatlab.Max_Array_Size];
-	private String[] Coefficients = new String[AMAtoMatlab.Max_Array_Size];
-	private Variable[] Variables = new Variable[AMAtoMatlab.Max_Array_Size];
+	private Equation[] Equations = new Equation[Max_Array_Size];
+	private String[] Coefficients = new String[Max_Array_Size];
+	private Variable[] Variables = new Variable[Max_Array_Size];
 	protected int NVars;
 	protected int NCoeffs;
 
@@ -251,13 +256,13 @@ public class Model {
 	      matrixPS.println();
 	
 	      for (i = 0; i < NEq; i++) {
-		getEquations()[i].getLHS().PrintGMatrixEntries(this, i, AMAtoMatlab.Left_Side,
+		getEquations()[i].getLHS().PrintGMatrixEntries(this, i, Left_Side,
 						     matrixPS);
-		getEquations()[i].getRHS().PrintGMatrixEntries(this, i, AMAtoMatlab.Right_Side,
+		getEquations()[i].getRHS().PrintGMatrixEntries(this, i, Right_Side,
 						     matrixPS);
-		getEquations()[i].getLHS().PrintHMatrixEntries(this, i, AMAtoMatlab.Left_Side,
+		getEquations()[i].getLHS().PrintHMatrixEntries(this, i, Left_Side,
 						     matrixPS);
-		getEquations()[i].getRHS().PrintHMatrixEntries(this, i, AMAtoMatlab.Right_Side,
+		getEquations()[i].getRHS().PrintHMatrixEntries(this, i, Right_Side,
 						     matrixPS);
 	      }
 	
