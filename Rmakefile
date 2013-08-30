@@ -1,0 +1,46 @@
+
+JC = javac
+JI = java
+# JCCC = C/RSMA/javacc-5.0/bin/javacc
+#JCCC = javacc
+OPTS = -target 1.1 -source 1.2 -classpath ../ -d ../ 
+
+ALLCLASS = AimConstants.class Model.class  Node.class Equation.class \
+	PowerNode.class \
+	Aim.class CoefficientNode.class ConstantNode.class \
+	ProductNode.class SumNode.class Variable.class \
+	VariableNode.class RunTheParser.class
+
+
+
+all: 
+	$(JC) $(OPTS) *.java
+# $@ = The file name of the target of the rule.
+# $< = The name of the first prerequisite.
+
+.SUFFIXES:  .java .class 
+
+.java.class:
+	$(JC) $(OPTS) $<
+
+#.jj.java:
+#	$(JCCC) $<
+
+#Aim.java: Aim.jj
+#	$(JCCC) Aim.jj
+
+Aim.class: Aim.java 
+	$(JC) $(OPTS) Aim.java
+
+
+clean:
+	rm *.class Aim.java 
+	rm -rf ../lib 
+	rm -rf ../modelez_R
+cleanObsolete:
+	rm TokenMgrError.java Token.java ParseException.java SimpleCharStream.java
+modelez_R.jar:	Aim.class
+	(cd ../; jar cvf /tmp/modelez_R.jar modelez_R)
+	mv /tmp/modelez_R.jar ../lib
+
+

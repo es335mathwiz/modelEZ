@@ -20,7 +20,10 @@ CC = gcc
 CFLAGS = -c -g -I$(SPAMADIR)/src/main/include
 
 RUN$(MODNAME): $(LOBJS) $(FOBJS) $(COBJS)
-	$(LINK) -g $(LOBJS) $(FOBJS) $(COBJS)  -lm $(LAPACKLIBS) -o RUN$(MODNAME)
+	$(LINK) -g $(LOBJS) -L/msu/home/m1gsa00/git/sparseAMA/target/nar/sparseAMA-1.0-SNAPSHOT-amd64-Linux-g++-shared/lib/amd64-Linux-g++/shared -lsparseAMA-1.0-SNAPSHOT  -lm $(LAPACKLIB) -o RUN$(MODNAME)
+#	$(LINK) -g $(LOBJS) $(FOBJS) $(COBJS)  -lm $(LAPACKLIBS) -o RUN$(MODNAME)
+
+
 
 $(PARAMFILENAME).o: $(PARAMFILENAME).f90
 	$(FC)  $(FFLAGS) $(PARAMFILENAME).f90 -fPIC
