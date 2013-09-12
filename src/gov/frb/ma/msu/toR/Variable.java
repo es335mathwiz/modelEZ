@@ -1,4 +1,4 @@
-package modelez_R;
+package gov.frb.ma.msu.toR;
 
 
 public class Variable
