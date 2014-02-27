@@ -101,10 +101,10 @@ alreadyInitializedQ = true;}
     int lastSlashIndex;
       if (args.length == 0) {
         	System.err.println(
-        	  "AMAtoC Java Parser Version 1.03: Reading from file stickywage"
+        	  "AMAtoC Java Parser Version 1.03: Reading from file "+args[0]
                             );
         try {
-	  PathName = "stickywage";
+	  PathName = args[0];
 	  lastSlashIndex = PathName.lastIndexOf('/');   // Real OS's
 	  if (lastSlashIndex < 0)
 	    lastSlashIndex = PathName.lastIndexOf('\\'); // Windows
@@ -129,7 +129,6 @@ alreadyInitializedQ = true;}
                            args[0] + "...");
         try {
 	  PathName = args[0];
-	  PathName = "stickywage";
 	  lastSlashIndex = PathName.lastIndexOf('/');   // Real OS's
 	  if (lastSlashIndex < 0)
 	    lastSlashIndex = PathName.lastIndexOf('\\'); // Windows
