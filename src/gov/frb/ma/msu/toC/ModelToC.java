@@ -18,11 +18,13 @@ public class ModelToC extends Model {
 	    PrintStream matrixPS;
 	    PrintStream templatePS;
 	    PrintStream parameterPS;
+	    PrintStream namesPS;
 	    String lcName = Name;
 	    lcName.toLowerCase();
 	    String dataFileName = lcName + "_AMA_data.c";
 	    String matrixFileName = lcName + "_AMA_matrices.c";
 	    String templateFileName = lcName + "_AMA_template.f90";
+	    String namesFileName = lcName + "_AMA_variablenames.f90";
 
 	    String parameterFileName = lcName + "_AMA_SetAllParamsZero.f90";
 	    
@@ -49,6 +51,7 @@ public class ModelToC extends Model {
 	    templatePS.println("INTEGER(KIND = 8), DIMENSION(" + (numCols)*NEq + ") :: newHmatj, newHmati, qmatj, qmati, bmati, bmatj");
 	    templatePS.println("INTEGER, dimension(:), allocatable :: aPointerToVoid");
 	    templatePS.println("INTEGER :: DISCRETE_TIME, ierr");
+	    templatePS.println("character (len=20), dimension(" + (NVars) + ") :: endog");
 	    
 	    templatePS.println();
 	    templatePS.println("INTEGER :: rows, cols");
@@ -286,6 +289,23 @@ public class ModelToC extends Model {
 		System.err.println("ERROR: " + e.getMessage());
 	    }
 	
+	    
+	    
+	    try {
+			namesPS = new PrintStream(new FileOutputStream(namesFileName));
+
+			namesPS.println("SUBROUTINE " + lcName + "_AMA_endog(char endog)");
+			for (i = 0; i < NVars; i++)
+				  namesPS.println("    endog(" + (i+1) + ") = '" +
+						 getVariables()[i].getName() + "'");
+				namesPS.println();
+				namesPS.println("END SUBROUTINE " + lcName + "_AMA_endog");
+			namesPS.close();
+	    }	catch (Exception e) {
+			System.err.println("ERROR: " + e.getMessage());
+		    }
+	   
+	    
 	/*****************************************************************
 	  Now print out the function compute_AMA_matrices(). This function
 	  will compute the G and H matrices.  Actually this is a script not
