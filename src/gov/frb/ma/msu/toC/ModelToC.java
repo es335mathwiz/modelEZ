@@ -294,7 +294,7 @@ public class ModelToC extends Model {
 	    try {
 			namesPS = new PrintStream(new FileOutputStream(namesFileName));
 			
-			namesPS.println("SUBROUTINE " + lcName + "_AMA_endog(char endog)");
+			namesPS.println("SUBROUTINE " + lcName + "_AMA_endog(endog)");
 		    namesPS.println("character (len=20), dimension(" + (NVars) + ") :: endog");
 			for (i = 0; i < NVars; i++)
 				  namesPS.println("    endog(" + (i+1) + ") = '" +
