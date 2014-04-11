@@ -44,9 +44,9 @@ public class VariableNodeToC extends Node
 	* m.getNEq() + eqno;
       pout.print("  g[" + index + "] = g[" + index + "]");
       if (side == Model.Left_Side)
-	pout.print(" + 1;\n");
+	pout.print(" + 1 ;\n");
       else
-	pout.print(" - 1;\n");
+	pout.print(" - 1 ;\n");
     }
   }
 
@@ -58,9 +58,9 @@ public class VariableNodeToC extends Node
 	* m.getNEq() + eqno;
       pout.print("  h[" + index + "] = h[" + index + "]");
       if (side == Model.Left_Side)
-	pout.print(" + 1;\n");
+	pout.print(" + 1 ;\n");
       else
-	pout.print(" - 1;\n");
+	pout.print(" - 1 ;\n");
     }
   }
 
