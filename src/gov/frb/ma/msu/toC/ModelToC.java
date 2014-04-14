@@ -34,7 +34,7 @@ public class ModelToC extends Model {
 	    templatePS.println("PROGRAM simpleSparseAMAExample !template file");
 	    templatePS.println();
 	    templatePS.println("IMPLICIT NONE");
-	    templatePS.println("INTEGER :: MAXELEMS, HROWS, HCOLS, LEADS, qrows, qcols");
+	    templatePS.println("INTEGER :: MAXELEMS, HROWS, HCOLS, LEADS, LAGS, qrows, qcols");
 	    templatePS.println("INTEGER, DIMENSION(" + (numCols)*NEq + ") :: hmatj, hmati");
 	    templatePS.println("REAL(KIND = 8), DIMENSION(" + (numCols)*NEq + ") :: hmat, denseHmat, denseBmat");
 	    
@@ -89,6 +89,7 @@ public class ModelToC extends Model {
 	    templatePS.println("call parserwrapper(params, g, h, denseHmat, HROWS, HCOLS,LEADS)");
 	    
 	    templatePS.println();
+	    templatePS.println("LAGS = "  + getNLag());
 	    templatePS.println("DISCRETE_TIME = 1");
 	    templatePS.println("qrows = HROWS * LEADS");
 	    templatePS.println("qcols = HCOLS - HROWS");
@@ -121,7 +122,7 @@ public class ModelToC extends Model {
 	    templatePS.println();
 	    
 	    templatePS.println();
-	    templatePS.println("call csrdnswrapper(LEADS*HROWS,HCOLS,bmat,bmatj,bmati,denseBmat,ierr)");
+	    templatePS.println("call csrdnswrapper(LEADS*HROWS,LAGS*HROWS,bmat,bmatj,bmati,denseBmat,ierr)");
 	    templatePS.println();
 	    
 	    templatePS.println();
