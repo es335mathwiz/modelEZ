@@ -1,0 +1,46 @@
+#File Locations
+JCC = /msu/res1/Software/javaCC/javacc-5.0/bin/javacc
+JCCJAR = /msu/res1/Software/javaCC/javacc-5.0/bin/lib/javacc.jar
+JAVAC = javac
+JAVACFLAGS = -d bin -cp bin -sourcepath src
+SRC= ./src/gov/frb/ma/msu/toMatlab/AMAtoMatlab.java \
+./src/gov/frb/ma/msu/toMatlab/AMAtoMatlabConstants.java \
+./src/gov/frb/ma/msu/toMatlab/AMAtoMatlabTokenManager.java \
+./src/gov/frb/ma/msu/toMatlab/ParseException.java \
+./src/gov/frb/ma/msu/toMatlab/ProductNode.java \
+./src/gov/frb/ma/msu/toMatlab/SimpleCharStream.java \
+./src/gov/frb/ma/msu/toMatlab/Token.java \
+./src/gov/frb/ma/msu/toMatlab/TokenMgrError.java \
+./src/gov/frb/ma/msu/toMatlab/VariableNode.java \
+CLS=  ./bin/gov/frb/ma/msu/toMatlab/AMAtoMatlab.class \
+./bin/gov/frb/ma/msu/toMatlab/AMAtoMatlabConstants.class \
+./bin/gov/frb/ma/msu/toMatlab/AMAtoMatlabTokenManager.class \
+./bin/gov/frb/ma/msu/toMatlab/ParseException.class \
+./bin/gov/frb/ma/msu/toMatlab/ProductNode.class \
+./bin/gov/frb/ma/msu/toMatlab/SimpleCharStream.class \
+./bin/gov/frb/ma/msu/toMatlab/Token.class \
+./bin/gov/frb/ma/msu/toMatlab/TokenMgrError.class \
+./bin/gov/frb/ma/msu/toMatlab/VariableNode.class 
+
+
+
+.SUFFIXES : .class .java
+.java.class :
+
+../modelEZAMA.jar: all
+	 cd bin;jar cf ../../modelEZAMA.jar gov
+
+all: $(CLS)
+	 mkdir -p bin
+			$(JAVAC) $(JAVACFLAGS) ./src/gov/frb/ma/msu/toMatlab/AMAtoMatlab.java 
+
+AMAtoMatlab.java : ./src/gov/frb/ma/msu/toMatlab/AMAModelEZtoMatlab.jj
+				 cd ./src/gov/frb/ma/msu/toMatlab/; \
+				 rm -f TokenMgrError.java ParseException.java \
+				 Token.java SimpleCharStream.java ;\
+				 $(JCC) AMAModelEZtoMatlab.jj
+
+
+clean:
+		rm -rf bin
+		rm ../modelEZAMA.jar 
