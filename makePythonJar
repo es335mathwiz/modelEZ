@@ -24,17 +24,18 @@ CLS=  ./bin/gov/frb/ma/msu/toPython/AMAtoPython.class \
 
 
 
-.SUFFIXES : .class .java
+.SUFFIXES : .class .java 
 .java.class :
 
-../modelEZPythonAMA.jar: all
+
+../modelEZPythonAMA.jar: ./src/gov/frb/ma/msu/toPython/AMAtoPython.java all
 	 cd bin;jar cf ../../modelEZPythonAMA.jar gov
 
 all: $(CLS)
 	 mkdir -p bin
 			$(JAVAC) $(JAVACFLAGS) ./src/gov/frb/ma/msu/toPython/AMAtoPython.java 
 
-AMAtoPython.java : ./src/gov/frb/ma/msu/toPython/AMAModelEZtoPython.jj
+./src/gov/frb/ma/msu/toPython/AMAtoPython.java : ./src/gov/frb/ma/msu/toPython/AMAModelEZtoPython.jj
 				 cd ./src/gov/frb/ma/msu/toPython/; \
 				 rm -f TokenMgrError.java ParseException.java \
 				 Token.java SimpleCharStream.java ;\
