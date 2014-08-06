@@ -1,4 +1,4 @@
-package gov.frb.ma.msu.toMatlab;
+package gov.frb.ma.msu.toPython;
 
 import gov.frb.ma.msu.modelEZCommon.Model;
 import gov.frb.ma.msu.modelEZCommon.Node;
@@ -113,7 +113,7 @@ public class ProductNode extends Node
       System.exit(1);
     }
     vTerm = (VariableNode) term;
-    if ((vTerm.Period <= 0) && (vTerm.ELag == AMAtoMatlab.No)) {
+    if ((vTerm.Period <= 0) && (vTerm.ELag == AMAtoPython.No)) {
       index = ((vTerm.Period + m.getNLag()) * m.getNEq() +
 	       m.FindVariableIndex(vTerm.Name))
 	* m.getNEq() + eqno;
@@ -143,7 +143,7 @@ public class ProductNode extends Node
       System.exit(1);
     }
     vTerm = (VariableNode) term;
-    if ((vTerm.Period > 0) || (vTerm.ELag == AMAtoMatlab.Yes)) {
+    if ((vTerm.Period > 0) || (vTerm.ELag == AMAtoPython.Yes)) {
       index = ((vTerm.Period + m.getNLag()) * m.getNEq() +
 	       m.FindVariableIndex(vTerm.Name))
 	* m.getNEq() + eqno;

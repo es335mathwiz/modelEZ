@@ -1,4 +1,4 @@
-package gov.frb.ma.msu.toMatlab;
+package gov.frb.ma.msu.toPython;
 
 import gov.frb.ma.msu.modelEZCommon.Model;
 import gov.frb.ma.msu.modelEZCommon.Node;
@@ -40,7 +40,7 @@ public class VariableNode extends Node
 				  PrintStream pout) {
     int index;
     int indexPlus1;
-    if ((Period <= 0) && (ELag == AMAtoMatlab.No)) {
+    if ((Period <= 0) && (ELag == AMAtoPython.No)) {
       index = ((Period + m.getNLag()) * m.getNEq() +
 	       m.FindVariableIndex(Name))
 	* m.getNEq() + eqno;
@@ -57,7 +57,7 @@ public class VariableNode extends Node
 				  PrintStream pout) {
     int index;
     int indexPlus1;
-    if ((Period > 0 ) || (ELag == AMAtoMatlab.Yes)) {
+    if ((Period > 0 ) || (ELag == AMAtoPython.Yes)) {
       index = ((Period + m.getNLag()) * m.getNEq() + m.FindVariableIndex(Name))
 	* m.getNEq() + eqno;
       indexPlus1 = index + 1;
@@ -70,7 +70,7 @@ public class VariableNode extends Node
   }
 
   public void PrintSubtree() {
-    if (ELag == AMAtoMatlab.Yes)
+    if (ELag == AMAtoPython.Yes)
       System.out.print("ELAG(" + Name + "," + (-1 * Period) + ")");
     else if (Period > 0)
       System.out.print(Name + "(" + Period + ")");
